@@ -1,50 +1,50 @@
 from collections import Counter, namedtuple
-from random import choices, choice, seed
+from random import choices, choice
 from rich import print
 
-Session = namedtuple(
-    "Session", ["bells", "intensity", "variation", "constraint", "volume", "load"]
-)
+Session = namedtuple("Session", ["bells", "variation", "volume", "load", "swings"])
 
 
 def create_ic_session():
-    intensity = choices(
-        population=["Hard Intensity", "Medium Intensity", "Easy Intensity"],
-        weights=[1 / 6, 3 / 6, 2 / 6],
+    bells = choices(
+        population=["Single Bell", "Double Bells"],
+        weights=[4 / 6, 2 / 6],
     )[0]
-    if intensity == "Hard Intensity":
+    if bells == "Double Bells":
         variation = choices(
             population=[
+                "Double Classic",
+                "Double Classic + Pullup",
+                "Double Traveling 2s",
+                "SFG II Focus",
+            ],
+            weights=[2 / 6, 1 / 6, 2 / 6, 1 / 6],
+        )[0]
+    elif bells == "Single Bell":
+        variation = choices(
+            population=[
+                "Classic",
+                "Classic + Pullup",
                 "Classic + Snatch",
                 "Traveling 2s",
-                "Moving Target",
+                "Traveling 2s + Snatch",
             ],
-            weights=[1 / 3, 1 / 3, 1 / 3],
         )[0]
-    elif intensity == "Medium Intensity":
-        variation = choices(
-            population=["Rep Ladder", "Weight Ladder", "SFG II Focus"],
-            weights=[1 / 6, 3 / 6, 2 / 6],
-        )[0]
-    else:
-        variation = "Classic"
-
-    constraint = choices(["work", "time"], [2 / 6, 4 / 6])
-    if constraint == "work":
-        volume = choices(
-            population=["40 sets +", "30 sets", "20 sets"],
-            weights=[2 / 6, 2 / 6, 2 / 6],
-        )[0]
-    else:
-        volume = choices(
-            population=["40 mins", "30 mins", "20 mins", "10 mins"],
-            weights=[1 / 6, 2 / 6, 2 / 6, 1 / 6],
-        )[0]
+    volume = choices(
+        population=["30 mins", "20 mins", "10 mins"],
+        weights=[1 / 6, 4 / 6, 1 / 6],
+    )[0]
     load = choices(
         population=["heavy load", "medium load", "light load"],
         weights=[2 / 6, 3 / 6, 1 / 6],
     )[0]
-    return Session(intensity, variation, constraint, volume, load)
+    swings = choices(
+        population=["Yes", "No Swings"],
+        weights=[2 / 6, 4 / 6],
+    )[0]
+    if swings == "yes":
+        swings = choice(range(50, 110, 10))
+    return Session(bells, variation, volume, load, swings)
 
 
 def simulation():
@@ -52,23 +52,26 @@ def simulation():
     stats = Counter()
     for session in sessions:
         for c in session:
+            if isinstance(c, int):
+                c = "Swings"
             stats.update([c])
-    return stats
-
-
-if __name__ == "__main__":
-    #     session = create_ic_session()
-    #     print(f"""Today's Workout
-    # ===============
-    # Intensity: {session.intensity.title()}
-    # Variation: {session.variation}
-    # Constraint: {session.constraint.title()}
-    # Volume: {session.volume.title()}
-    # Load: {session.load.title()}
-    # """)
-    #
-    one_year = simulation()
-    one_year = dict(sorted(one_year.items(), key=lambda x: x[1], reverse=True))
+    one_year = dict(sorted(stats.items(), key=lambda x: x[1], reverse=True))
     width = len(max(one_year.keys(), key=len))
     for session, count in one_year.items():
         print(f"{session: >{width}}: " + "#" * count)
+
+
+if __name__ == "__main__":
+    session = create_ic_session()
+    if session.swings == "yes":
+        swings = f"Swings: {session.swings} reps"
+    else:
+        swings = ""
+    print(f"""Today's Workout
+    ===============
+    Bells: {session.bells.title()}
+    Variation: {session.variation}
+    Volume: {session.volume}
+    Load: {session.load.title()}
+    {swings}
+    """)
