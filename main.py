@@ -5,6 +5,15 @@ from rich import print
 Session = namedtuple("Session", ["bells", "variation", "volume", "load", "swings"])
 
 
+def set_loads():
+    """Set the weight for the light, medium, and heavy loads."""
+    units = input("[P]ounds or [K]ilograms.")
+    light_load = input("Enter the weight for the light kettlebells:\n> ")
+    medium_load = input("Enter the weight for the medium kettlebells:\n> ")
+    heavy_load = input("Enter the weight for the heavy kettlebells:\n> ")
+    return units, light_load, medium_load, heavy_load
+
+
 def create_ic_session():
     bells = choices(
         population=["Single Bell", "Double Bells"],
