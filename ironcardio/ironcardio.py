@@ -3,9 +3,6 @@ from random import choices, choice
 from rich import print
 
 from typing import NamedTuple
-from pathlib import Path
-from ironcardio import DB_READ_ERROR
-from ironcardio.database import DatabaseHandler
 
 
 class Session(NamedTuple):
@@ -14,7 +11,6 @@ class Session(NamedTuple):
     time: str
     load: str
     swings: str | int
-    error: int
 
 
 class Loads(NamedTuple):
@@ -22,7 +18,6 @@ class Loads(NamedTuple):
     light: int
     medium: int
     heavy: int
-    error: int
 
 
 BELLS = {"Single Bell": 4 / 6, "Double Bells": 2 / 6}
@@ -50,7 +45,7 @@ LOADS = {
     "medium load": 3 / 6,
     "light load": 1 / 6,
 }
-SWINGS = {"Yes": 2 / 6, "No Swings": 4 / 6}
+SWINGS = {True: 2 / 6, False: 4 / 6}
 
 
 def set_loads():
@@ -93,7 +88,7 @@ def create_ic_session():
         population=tuple(SWINGS.keys()),
         weights=tuple(SWINGS.values()),
     )[0]
-    if swings == "yes":
+    if swings:
         swings = choice(range(50, 110, 10))
     return Session(bells, variation, time, load, swings)
 
@@ -112,25 +107,9 @@ def simulation():
         print(f"{session: >{width}}: " + "#" * count)
 
 
-# class SessionConstructor:
-#     def __init__(self, db_path: Path) -> None:
-#         self._db_handler = DatabaseHandler(db_path)
-#
-#     def add(self, description: list[str], priority: int = 2) -> Session:
-#         """Add a new session to the database."""
-#         session = create_ic_session()
-#
-#         read = self._db_handler.read_sessions()
-#         if read.error == DB_READ_ERROR:
-#             return Session(session, read.error)
-#         read.todo_list.append(session)
-#         write = self._db_handler.write_todos(read.todo_list)
-#         return Session(session, write.error)
-#
-
 if __name__ == "__main__":
     session = create_ic_session()
-    if session.swings == "yes":
+    if session.swings:
         swings = f"Swings: {session.swings} reps"
     else:
         swings = ""
