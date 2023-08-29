@@ -2,10 +2,11 @@ from collections import Counter
 from random import choices, choice
 from rich import print
 
-from typing import NamedTuple
+from dataclasses import dataclass
 
 
-class Session(NamedTuple):
+@dataclass
+class Session():
     bells: str
     variation: str
     time: str
@@ -13,7 +14,8 @@ class Session(NamedTuple):
     swings: str | int
 
 
-class Loads(NamedTuple):
+@dataclass
+class Loads():
     units: str
     light: int
     medium: int
@@ -114,7 +116,7 @@ if __name__ == "__main__":
     else:
         swings = ""
     print(
-        f"""Today's Workout
+        f"""Today's Session
     ===============
     Bells: {session.bells.title()}
     Variation: {session.variation}
