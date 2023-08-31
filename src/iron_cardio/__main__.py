@@ -1,4 +1,4 @@
-from ironcardio import cli, __app_name__
+from iron_cardio import cli, __app_name__
 
 
 def main():
