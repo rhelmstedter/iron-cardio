@@ -68,14 +68,15 @@ def loads(
         else:
             print("Please enter a p or k")
             continue
-        light_load = IntPrompt.ask("Enter the weight for the light kettlebells:\n> ")
-        medium_load = IntPrompt.ask("Enter the weight for the medium kettlebells:\n> ")
-        heavy_load = IntPrompt.ask("Enter the weight for the heavy kettlebells:\n> ")
+        print("Enter the weight for the...")
+        light_load = IntPrompt.ask("Light kettlebell")
+        medium_load = IntPrompt.ask("Medium kettlebell")
+        heavy_load = IntPrompt.ask("Heavy kettlebells")
         loads = {
             "units": units,
-            "light_load": light_load,
-            "medium_load": medium_load,
-            "heavy_load": heavy_load,
+            "light load": light_load,
+            "medium load": medium_load,
+            "heavy load": heavy_load,
         }
         print(loads)
         if Confirm.ask(
