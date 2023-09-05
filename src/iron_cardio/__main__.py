@@ -71,16 +71,24 @@ def loads(
         light_load = IntPrompt.ask("Enter the weight for the light kettlebells:\n> ")
         medium_load = IntPrompt.ask("Enter the weight for the medium kettlebells:\n> ")
         heavy_load = IntPrompt.ask("Enter the weight for the heavy kettlebells:\n> ")
-        loads = {"units": units, "light_load": light_load, "medium_load": medium_load, "heavy_load": heavy_load}
+        loads = {
+            "units": units,
+            "light_load": light_load,
+            "medium_load": medium_load,
+            "heavy_load": heavy_load,
+        }
         print(loads)
-        if Confirm.ask("Are these loads correct? If you confirm, they will be stored under .iron-cardio and used to generate sessions."):
+        if Confirm.ask(
+            "Are these loads correct? If you confirm, they will be used to generate sessions."
+        ):
             break
 
     # data = json.load(open("mydata.json"))
     # json.dump(data, open("mydata.json", "w"))
 
-#TODO when creating a session, first check if the loads have been set
-#TODO when saving a session, first check if the database exists.
+
+# TODO when creating a session, first check if the loads have been set
+# TODO when saving a session, first check if the database exists.
 
 
 if __name__ == "__main__":
