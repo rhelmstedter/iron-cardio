@@ -1,13 +1,23 @@
-from typer.testing import CliRunner
+from iron_cardio.iron_cardio import create_ic_session, Session
+from iron_cardio.constants import (
+    BELLS,
+    DOUBLEBELL_VARIATIONS,
+    SINGLEBELL_VARIATIONS,
+    TIMES,
+    LOADS,
+)
+
+POSSIBLE_SWINGS = [50, 60, 70, 80, 90, 100]
 
 
-from iron_cardio.__main__ import cli
-from iron_cardio.__init__ import __version__
-
-runner = CliRunner()
-
-
-def test_version():
-    result = runner.invoke(cli, ["--version"])
-    assert result.exit_code == 0
-    assert f"{__version__}\n" in result.stdout
+def test_create_ic_session():
+    actual = create_ic_session()
+    assert isinstance(actual, Session)
+    assert actual.bells in BELLS.keys()
+    assert (
+        actual.variation in DOUBLEBELL_VARIATIONS.keys()
+        or actual.variation in SINGLEBELL_VARIATIONS.keys()
+    )
+    assert actual.time in TIMES.keys()
+    assert actual.load in LOADS.keys()
+    assert actual.swings is False or actual.swings in POSSIBLE_SWINGS
