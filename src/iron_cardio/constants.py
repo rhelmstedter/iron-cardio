@@ -1,7 +1,10 @@
 """constants for iron cardio session parameters
 
 """
+from pathlib import Path
 
+IRON_CARDIO_HOME = Path().home() / ".iron-cardio"
+IRON_CARDIO_DB = IRON_CARDIO_HOME / "iron_cardio_db.json"
 BELLS = {"Single Bell": 4 / 6, "Double Bells": 2 / 6}
 DOUBLEBELL_VARIATIONS = {
     "Double Classic": 2 / 6,

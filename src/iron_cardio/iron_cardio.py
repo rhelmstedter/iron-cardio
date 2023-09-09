@@ -1,4 +1,5 @@
 from collections import Counter
+import json
 from random import choices, choice
 
 from dataclasses import dataclass
@@ -9,6 +10,7 @@ from .constants import (
     TIMES,
     LOADS,
     SWINGS,
+    IRON_CARDIO_DB,
 )
 
 
@@ -18,10 +20,14 @@ class Session:
     variation: str
     time: str
     load: str
-    swings: str | int
+    units: str
+    swings: bool | int
 
 
 def create_ic_session():
+    with open(IRON_CARDIO_DB, "r") as db:
+        data = json.load(db)
+        loads = data["loads"]
     bells = choices(
         population=tuple(BELLS.keys()),
         weights=tuple(BELLS.values()),
@@ -44,13 +50,15 @@ def create_ic_session():
         population=tuple(LOADS.keys()),
         weights=tuple(LOADS.values()),
     )[0]
+    load = loads[load]
+    units = loads["units"]
     swings = choices(
         population=tuple(SWINGS.keys()),
         weights=tuple(SWINGS.values()),
     )[0]
     if swings:
         swings = choice(range(50, 110, 10))
-    return Session(bells, variation, time, load, swings)
+    return Session(bells, variation, time, load, units, swings)
 
 
 def simulation():
