@@ -1,6 +1,7 @@
 from collections import Counter
 import json
 from random import choices, choice
+from rich import print
 
 from dataclasses import dataclass
 from .constants import (
@@ -24,7 +25,7 @@ class Session:
     swings: bool | int
 
 
-def create_ic_session():
+def create_session():
     with open(IRON_CARDIO_DB, "r") as db:
         data = json.load(db)
         loads = data["loads"]
@@ -61,8 +62,24 @@ def create_ic_session():
     return Session(bells, variation, time, load, units, swings)
 
 
+def display_session(session: Session) -> None:
+    if session.swings:
+        swings = f"Swings: {session.swings} reps"
+    else:
+        swings = ""
+    print(
+        f"""Iron Cardio Session
+    ===============
+    Bells: {session.bells.title()}
+    Variation: {session.variation}
+    Time: {session.time}
+    Load: {session.load} {session.units}
+    {swings}
+    """
+    )
+
 def simulation():
-    sessions = [create_ic_session() for s in range(3 * 52)]
+    sessions = [create_session() for s in range(3 * 52)]
     stats = Counter()
     for session in sessions:
         for c in session:
@@ -72,4 +89,5 @@ def simulation():
     one_year = dict(sorted(stats.items(), key=lambda x: x[1], reverse=True))
     width = len(max(one_year.keys(), key=len))
     for session, count in one_year.items():
+        print(f"{session: >{width}}: " + "#" * count)
         print(f"{session: >{width}}: " + "#" * count)
