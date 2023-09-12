@@ -1,17 +1,29 @@
-import json
+import shutil
 import sys
-from collections import deque
-from dataclasses import asdict
 from pathlib import Path
 
 import typer
 from rich import print
 from rich.console import Console
-from rich.prompt import Confirm, IntPrompt, Prompt
+from rich.prompt import Confirm
 
 from . import __version__
 from .constants import IRON_CARDIO_DB, IRON_CARDIO_HOME
-from .iron_cardio import Session, create_session, display_session
+from .iron_cardio import (
+    Session,
+    create_session,
+    display_session,
+    create_custom_session,
+    set_loads,
+)
+from .iron_cardio_database import (
+    cache_session,
+    confirm_loads,
+    read_database,
+    write_database,
+    initialize_database,
+    save_session,
+)
 
 cli = typer.Typer(add_completion=False)
 
@@ -23,27 +35,6 @@ def report_version(display: bool) -> None:
     if display:
         print(f"{Path(sys.argv[0]).name} {__version__}")
         raise typer.Exit()
-
-
-def database_exists() -> None:
-    if not IRON_CARDIO_DB.is_file():
-        console.print("[red]:warning: Could not find Iron Cardio database.")
-        console.print(
-            "[yellow] Try running the [underline]iron-cardio loads[/underline] first."
-        )
-        sys.exit()
-    return
-
-
-def cache_session(session: Session) -> None:
-    """Cache last 10 generated sessions."""
-    with open(IRON_CARDIO_DB) as db:
-        data = json.load(db)
-        cache = deque(data["cached_sessions"], maxlen=10)
-        cache.append(asdict(session))
-    with open(IRON_CARDIO_DB, "w") as db:
-        data["cached_sessions"] = list(cache)
-        json.dump(data, db)
 
 
 @cli.callback()
@@ -62,47 +53,37 @@ def global_options(
 
 
 @cli.command()
+def init(
+    ctx: typer.Context,
+    force: bool = typer.Option(
+        False,
+        "--force",
+        "-f",
+        is_flag=True,
+        is_eager=True,
+    ),
+) -> None:
+    """Initializes the Iron Cardio database."""
+    if IRON_CARDIO_HOME.is_dir() and force:
+        shutil.rmtree(IRON_CARDIO_HOME)
+        initialize_database(home=IRON_CARDIO_HOME, database=IRON_CARDIO_DB)
+    elif IRON_CARDIO_HOME.is_dir() or IRON_CARDIO_DB.is_file():
+        console.print(
+            "[yellow] Database base already exits. Run 'iron-cardio init --force' to overwrite database."
+        )
+    else:
+        initialize_database(home=IRON_CARDIO_HOME, database=IRON_CARDIO_DB)
+
+
+@cli.command()
 def loads(
     ctx: typer.Context,
 ) -> None:
     """Set units and loads for iron cardio sessions."""
-    while True:
-        units = Prompt.ask("[P]ounds or [K]ilograms").lower()
-        if units.startswith("p"):
-            units = "pounds"
-        elif units.startswith("k"):
-            units = "kilograms"
-        else:
-            console.print("Please enter a p or k")
-            continue
-        console.print("Enter the weight for the...")
-        light_load = IntPrompt.ask("Light kettlebell")
-        medium_load = IntPrompt.ask("Medium kettlebell")
-        heavy_load = IntPrompt.ask("Heavy kettlebell")
-        loads = {
-            "units": units,
-            "light load": light_load,
-            "medium load": medium_load,
-            "heavy load": heavy_load,
-        }
-        console.clear()
-        for label, value in loads.items():
-            console.print(f"{label.title()}: {value}")
-        if Confirm.ask(
-            "Are these loads correct? If you confirm, they will be used to generate sessions."
-        ):
-            break
-    if not IRON_CARDIO_HOME.is_dir():
-        IRON_CARDIO_HOME.mkdir()
-        data = {"loads": loads, "saved_sessions": [], "cached_sessions": []}
-        with open(IRON_CARDIO_DB, "w") as db:
-            json.dump(data, db)
-    else:
-        with open(IRON_CARDIO_DB, "r") as db:
-            data = json.load(db)
-            data["loads"] = loads
-        with open(IRON_CARDIO_DB, "w") as db:
-            json.dump(data, db)
+    loads = set_loads()
+    data = read_database()
+    data["loads"] = loads
+    write_database(data)
 
 
 @cli.command()
@@ -110,7 +91,7 @@ def session(
     ctx: typer.Context,
 ) -> None:
     """Create a random Iron Cardio session."""
-    database_exists()
+    confirm_loads()
     session = create_session()
     cache_session(session)
     display_session(session)
@@ -127,22 +108,18 @@ def done(
     )
 ) -> None:
     """Save an Iron Cardio session"""
-    database_exists()
+    confirm_loads()
     # TODO create a way to save a custom session
-    # if custom:
-    #     save_custom_session()
-    with open(IRON_CARDIO_DB, "r") as db:
-        data = json.load(db)
-        last_workout = dict(**data["cached_sessions"][-1])
-    console.print("Last workout generated:")
-    display_session(Session(**last_workout))
-    if Confirm.ask(
-        "Save this workout?"
-    ):
-        last_workout["sets"] = IntPrompt.ask("How many sets did you complete?")
-        data["saved_sessions"].append(last_workout)
-        with open(IRON_CARDIO_DB, "w") as db:
-            json.dump(data, db)
+    if custom:
+        session = create_custom_session()
+        display_session(session)
+    else:
+        data = read_database()
+        session = Session(**data["cached_sessions"][-1])
+        console.print("Last workout generated:\n")
+        display_session(session)
+    if Confirm.ask("Save this session?"):
+        save_session(session)
 
 
 if __name__ == "__main__":

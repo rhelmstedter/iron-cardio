@@ -1,17 +1,20 @@
-from collections import Counter
 import json
-from random import choices, choice
-from rich import print
-
+from collections import Counter
 from dataclasses import dataclass
+from random import choice, choices
+
+from rich import print
+from rich.console import Console
+from rich.prompt import Confirm, IntPrompt, Prompt
+
 from .constants import (
     BELLS,
     DOUBLEBELL_VARIATIONS,
-    SINGLEBELL_VARIATIONS,
-    TIMES,
-    LOADS,
-    SWINGS,
     IRON_CARDIO_DB,
+    LOADS,
+    SINGLEBELL_VARIATIONS,
+    SWINGS,
+    TIMES,
 )
 
 
@@ -23,10 +26,14 @@ class Session:
     load: str
     units: str
     swings: bool | int
+    sets: int = 0
+
+
+console = Console()
 
 
 def create_session():
-    with open(IRON_CARDIO_DB, "r") as db:
+    with open(IRON_CARDIO_DB) as db:
         data = json.load(db)
         loads = data["loads"]
     bells = choices(
@@ -58,7 +65,31 @@ def create_session():
         weights=tuple(SWINGS.values()),
     )[0]
     if swings:
-        swings = choice(range(50, 110, 10))
+        swings = choice(range(50, 160, 10))
+    return Session(bells, variation, time, load, units, swings)
+
+
+def _get_options(session_param: dict) -> str:
+    """Select options for a given Session parameter."""
+    options = list(session_param.keys())
+    for i, option in enumerate(options, 1):
+        print(f"    [{i}] {option}")
+    selection = IntPrompt.ask("Choose your option")
+    return options[selection - 1]
+
+
+def create_custom_session():
+    """Create a custom Iron Cardio session."""
+    bells = _get_options(BELLS)
+    if bells == "Double Bells":
+        variation = _get_options(DOUBLEBELL_VARIATIONS)
+    elif bells == "Single Bell":
+        variation = _get_options(SINGLEBELL_VARIATIONS)
+    time = IntPrompt.ask("How long was your session (in minutes)")
+    units = _get_units()
+    load = IntPrompt.ask(f"What weight did you use (in {units})")
+    if Confirm.ask("Did you swing"):
+        swings = IntPrompt.ask("How many swings")
     return Session(bells, variation, time, load, units, swings)
 
 
@@ -69,7 +100,7 @@ def display_session(session: Session) -> None:
         swings = ""
     print(
         f"""Iron Cardio Session
-    ===============
+    ====================
     Bells: {session.bells.title()}
     Variation: {session.variation}
     Time: {session.time}
@@ -77,6 +108,44 @@ def display_session(session: Session) -> None:
     {swings}
     """
     )
+
+
+def _get_units():
+    while True:
+        units = Prompt.ask("[P]ounds or [K]ilograms").lower()
+        if units.startswith("p"):
+            units = "pounds"
+        elif units.startswith("k"):
+            units = "kilograms"
+        else:
+            console.print("Please enter a p or k")
+            continue
+        break
+    return units
+
+
+def set_loads() -> dict:
+    while True:
+        units = _get_units()
+        console.print("Enter the weight for the...")
+        light_load = IntPrompt.ask("Light kettlebell")
+        medium_load = IntPrompt.ask("Medium kettlebell")
+        heavy_load = IntPrompt.ask("Heavy kettlebell")
+        loads = {
+            "units": units,
+            "light load": light_load,
+            "medium load": medium_load,
+            "heavy load": heavy_load,
+        }
+        console.clear()
+        for label, value in loads.items():
+            console.print(f"{label.title()}: {value}")
+        if Confirm.ask(
+            "Are these loads correct? If you confirm, they will be used to generate sessions."
+        ):
+            break
+    return loads
+
 
 def simulation():
     sessions = [create_session() for s in range(3 * 52)]
