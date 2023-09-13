@@ -17,3 +17,8 @@ def test_create_session():
     result = runner.invoke(cli, ["session"])
     assert result.exit_code == 0
     assert "Iron Cardio Session" in result.stdout
+    assert "====================" in result.stdout
+    assert "Bells: " in result.stdout
+    assert "Variation: " in result.stdout
+    assert "Time: " in result.stdout
+    assert "Load: " in result.stdout

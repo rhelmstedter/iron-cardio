@@ -1,12 +1,14 @@
-from rich.console import Console
-from .constants import IRON_CARDIO_DB
-import sys
 import json
-from pathlib import Path
-from .iron_cardio import Session
+import sys
 from collections import deque
 from dataclasses import asdict
+from pathlib import Path
+
+from rich.console import Console
 from rich.prompt import IntPrompt
+
+from .constants import IRON_CARDIO_DB
+from .iron_cardio import Session
 
 console = Console()
 
