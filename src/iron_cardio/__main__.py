@@ -1,4 +1,3 @@
-import shutil
 import sys
 from pathlib import Path
 
@@ -9,20 +8,14 @@ from rich.prompt import Confirm
 
 from . import __version__
 from .constants import IRON_CARDIO_DB, IRON_CARDIO_HOME
-from .iron_cardio import (
-    Session,
-    create_session,
-    display_session,
-    create_custom_session,
-    set_loads,
-)
+import iron_cardio.iron_cardio as ic
 from .iron_cardio_database import (
     cache_session,
     confirm_loads,
-    read_database,
-    write_database,
     initialize_database,
+    read_database,
     save_session,
+    write_database,
 )
 
 cli = typer.Typer(add_completion=False)
@@ -64,15 +57,9 @@ def init(
     ),
 ) -> None:
     """Initializes the Iron Cardio database."""
-    if IRON_CARDIO_HOME.is_dir() and force:
-        shutil.rmtree(IRON_CARDIO_HOME)
-        initialize_database(home=IRON_CARDIO_HOME, database=IRON_CARDIO_DB)
-    elif IRON_CARDIO_HOME.is_dir() or IRON_CARDIO_DB.is_file():
-        console.print(
-            "[yellow] Database base already exits. Run 'iron-cardio init --force' to overwrite database."
-        )
-    else:
-        initialize_database(home=IRON_CARDIO_HOME, database=IRON_CARDIO_DB)
+    initialize_database(
+        iron_cardio_home=IRON_CARDIO_HOME, database=IRON_CARDIO_DB, force=force
+    )
 
 
 @cli.command()
@@ -80,10 +67,10 @@ def loads(
     ctx: typer.Context,
 ) -> None:
     """Set units and loads for iron cardio sessions."""
-    loads = set_loads()
-    data = read_database()
+    loads = ic.set_loads()
+    data = read_database(IRON_CARDIO_DB)
     data["loads"] = loads
-    write_database(data)
+    write_database(IRON_CARDIO_DB, data)
 
 
 @cli.command()
@@ -91,10 +78,10 @@ def session(
     ctx: typer.Context,
 ) -> None:
     """Create a random Iron Cardio session."""
-    confirm_loads()
-    session = create_session()
-    cache_session(session)
-    display_session(session)
+    confirm_loads(IRON_CARDIO_DB)
+    session = ic.create_session(IRON_CARDIO_DB)
+    cache_session(IRON_CARDIO_DB, session)
+    ic.display_session(session)
 
 
 @cli.command()
@@ -108,18 +95,17 @@ def done(
     )
 ) -> None:
     """Save an Iron Cardio session"""
-    confirm_loads()
-    # TODO create a way to save a custom session
+    confirm_loads(IRON_CARDIO_DB)
     if custom:
-        session = create_custom_session()
-        display_session(session)
+        session = ic.create_custom_session()
+        ic.display_session(session)
     else:
-        data = read_database()
-        session = Session(**data["cached_sessions"][-1])
+        data = read_database(IRON_CARDIO_DB)
+        session = ic.Session(**data["cached_sessions"][-1])
         console.print("Last workout generated:\n")
-        display_session(session)
+        ic.display_session(session)
     if Confirm.ask("Save this session?"):
-        save_session(session)
+        save_session(IRON_CARDIO_DB, session)
 
 
 if __name__ == "__main__":

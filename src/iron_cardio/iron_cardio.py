@@ -1,6 +1,6 @@
-import json
 from collections import Counter
 from dataclasses import dataclass
+from pathlib import Path
 from random import choice, choices
 
 from rich import print
@@ -10,12 +10,12 @@ from rich.prompt import Confirm, IntPrompt, Prompt
 from .constants import (
     BELLS,
     DOUBLEBELL_VARIATIONS,
-    IRON_CARDIO_DB,
     LOADS,
     SINGLEBELL_VARIATIONS,
     SWINGS,
     TIMES,
 )
+from .iron_cardio_database import read_database
 
 
 @dataclass
@@ -32,10 +32,10 @@ class Session:
 console = Console()
 
 
-def create_session():
-    with open(IRON_CARDIO_DB) as db:
-        data = json.load(db)
-        loads = data["loads"]
+def create_session(db_path: Path):
+    """Create a random Iron Cardio Session."""
+    data = read_database(db_path)
+    loads = data["loads"]
     bells = choices(
         population=tuple(BELLS.keys()),
         weights=tuple(BELLS.values()),

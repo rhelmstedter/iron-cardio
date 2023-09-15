@@ -4,13 +4,14 @@ from iron_cardio.constants import (
     DOUBLEBELL_VARIATIONS,
     SINGLEBELL_VARIATIONS,
     TIMES,
+    IRON_CARDIO_DB,
 )
 
 POSSIBLE_SWINGS = [50, 60, 70, 80, 90, 100, 110, 120, 130, 140, 150]
 
 
 def test_create_session():
-    actual = create_session()
+    actual = create_session(IRON_CARDIO_DB)
     assert isinstance(actual, Session)
     assert actual.bells in BELLS.keys()
     assert (
