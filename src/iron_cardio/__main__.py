@@ -6,9 +6,10 @@ from rich import print
 from rich.console import Console
 from rich.prompt import Confirm, IntPrompt
 
+import iron_cardio.iron_cardio as ic
+
 from . import __version__
 from .constants import IRON_CARDIO_DB, IRON_CARDIO_HOME
-import iron_cardio.iron_cardio as ic
 from .iron_cardio_database import (
     cache_session,
     confirm_loads,
