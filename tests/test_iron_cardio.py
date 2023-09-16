@@ -1,5 +1,8 @@
-from pathlib import Path
 import json
+from pathlib import Path
+from unittest import mock
+
+import pytest
 
 from iron_cardio.constants import (
     BELLS,
@@ -7,14 +10,23 @@ from iron_cardio.constants import (
     SINGLEBELL_VARIATIONS,
     TIMES,
 )
-from iron_cardio.iron_cardio import Session, create_session, display_session
+from iron_cardio.iron_cardio import (
+    Session,
+    _get_options,
+    _get_units,
+    create_custom_session,
+    create_session,
+    display_session,
+    set_loads,
+)
+
 from .test_constants import TEST_SESSION
 
 POSSIBLE_SWINGS = [50, 60, 70, 80, 90, 100, 110, 120, 130, 140, 150]
 
 
 def test_create_session(database):
-    loads = json.load(open(database.name))['loads']
+    loads = json.load(open(database.name))["loads"]
     actual = create_session(Path(database.name))
     assert isinstance(actual, Session)
     assert actual.bells in BELLS.keys()
@@ -24,7 +36,7 @@ def test_create_session(database):
     )
     assert actual.time in TIMES.keys()
     assert actual.load in loads.values()
-    assert actual.units == loads['units']
+    assert actual.units == loads["units"]
     assert actual.swings is False or actual.swings in POSSIBLE_SWINGS
 
 
@@ -37,3 +49,56 @@ def test_display_session(capfd):
     assert "Variation: " in output
     assert "Time: " in output
     assert "Load: " in output
+
+
+@mock.patch("iron_cardio.iron_cardio.IntPrompt.ask")
+@mock.patch("iron_cardio.iron_cardio.Confirm")
+@mock.patch("iron_cardio.iron_cardio._get_units")
+def test_set_loads(units_mock, confirm_mock, int_mock):
+    expected = {"units": "pounds", "light load": 1, "medium load": 2, "heavy load": 3}
+    int_mock.side_effect = [1, 2, 3]
+    confirm_mock.side_effect = ["y"]
+    units_mock.side_effect = ["pounds"]
+    actual = set_loads()
+    assert actual == expected
+
+
+@pytest.mark.parametrize("response, units", [("p", "pounds"), ("k", "kilograms")])
+@mock.patch("iron_cardio.iron_cardio.Prompt.ask")
+def test_get_units(ask_mock, response, units):
+    expected = units
+    ask_mock.side_effect = [response]
+    actual = _get_units()
+    assert actual == expected
+
+
+@pytest.mark.parametrize(
+    "session_param, response, option",
+    [
+        (BELLS, 1, "Single Bell"),
+        (SINGLEBELL_VARIATIONS, 3, "Classic + Snatch"),
+        (DOUBLEBELL_VARIATIONS, 4, "SFG II Focus"),
+    ],
+)
+@mock.patch("iron_cardio.iron_cardio.IntPrompt.ask")
+def test_get_options(ask_mock, session_param, response, option):
+    expected = option
+    ask_mock.side_effect = [response]
+    actual = _get_options(session_param)
+    assert actual == expected
+
+
+@mock.patch("iron_cardio.iron_cardio.IntPrompt.ask")
+@mock.patch("iron_cardio.iron_cardio.Confirm")
+@mock.patch("iron_cardio.iron_cardio._get_units")
+@mock.patch("iron_cardio.iron_cardio._get_options")
+def test_custom_session(options_mock, units_mock, confirm_mock, int_mock):
+    expected = TEST_SESSION
+    options_mock.side_effect = ["Double Bells", "Double Classic + Pullup"]
+    int_mock.side_effect = [30, 28, 60]
+    confirm_mock.side_effect = ["y"]
+    units_mock.side_effect = ["kilograms"]
+    actual = create_custom_session()
+    actual.sets = 20
+    assert isinstance(actual, Session)
+    assert actual == expected

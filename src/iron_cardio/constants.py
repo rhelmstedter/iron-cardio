@@ -21,9 +21,9 @@ SINGLEBELL_VARIATIONS = {
     "Traveling 2s + Pullup": 1 / 6,
 }
 TIMES = {
-    "30 mins": 1 / 6,
-    "20 mins": 4 / 6,
-    "10 mins": 1 / 6,
+    30: 1 / 6,
+    20: 4 / 6,
+    10: 1 / 6,
 }
 LOADS = {
     "heavy load": 2 / 6,

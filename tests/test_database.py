@@ -68,7 +68,7 @@ def test_save_session(database):
     assert data["saved_sessions"][-1] == {
         "bells": "Double Bells",
         "variation": "Double Classic + Pullup",
-        "time": "30 mins",
+        "time": 30,
         "load": 28,
         "units": "kilograms",
         "swings": 60,

@@ -4,7 +4,7 @@ TEST_SESSION = Session(
     **{
         "bells": "Double Bells",
         "variation": "Double Classic + Pullup",
-        "time": "30 mins",
+        "time": 30,
         "load": 28,
         "units": "kilograms",
         "swings": 60,
@@ -16,7 +16,7 @@ TEST_CACHE_SESSION = Session(
     **{
         "bells": "Double Bells",
         "variation": "Double Classic",
-        "time": "20 mins",
+        "time": 20,
         "load": 20,
         "units": "kilograms",
         "swings": False,
@@ -35,7 +35,7 @@ TEST_DATA = {
         {
             "bells": "Double Bells",
             "variation": "Double Classic",
-            "time": "20 mins",
+            "time": 20,
             "load": 20,
             "units": "kilograms",
             "swings": False,
@@ -46,7 +46,7 @@ TEST_DATA = {
         {
             "bells": "Single Bell",
             "variation": "Classic",
-            "time": "10 mins",
+            "time": 10,
             "load": 28,
             "units": "kilograms",
             "swings": False,
@@ -66,7 +66,7 @@ TEST_DATA_FULL_CACHE = {
         {
             "bells": "Double Bells",
             "variation": "Double Classic",
-            "time": "20 mins",
+            "time": 20,
             "load": 20,
             "units": "kilograms",
             "swings": False,
@@ -77,7 +77,7 @@ TEST_DATA_FULL_CACHE = {
         {
             "bells": "Single Bell",
             "variation": "Classic",
-            "time": "10 mins",
+            "time": 10,
             "load": 28,
             "units": "kilograms",
             "swings": False,
@@ -86,7 +86,7 @@ TEST_DATA_FULL_CACHE = {
         {
             "bells": "Double Bells",
             "variation": "Double Classic",
-            "time": "10 mins",
+            "time": 10,
             "load": 24,
             "units": "kilograms",
             "swings": False,
@@ -95,7 +95,7 @@ TEST_DATA_FULL_CACHE = {
         {
             "bells": "Single Bell",
             "variation": "Traveling 2s + Snatch",
-            "time": "20 mins",
+            "time": 20,
             "load": 24,
             "units": "kilograms",
             "swings": 70,
@@ -104,7 +104,7 @@ TEST_DATA_FULL_CACHE = {
         {
             "bells": "Double Bells",
             "variation": "Double Classic",
-            "time": "10 mins",
+            "time": 10,
             "load": 28,
             "units": "kilograms",
             "swings": False,
@@ -113,7 +113,7 @@ TEST_DATA_FULL_CACHE = {
         {
             "bells": "Single Bell",
             "variation": "Traveling 2s + Snatch",
-            "time": "20 mins",
+            "time": 20,
             "load": 24,
             "units": "kilograms",
             "swings": False,
@@ -122,7 +122,7 @@ TEST_DATA_FULL_CACHE = {
         {
             "bells": "Single Bell",
             "variation": "Traveling 2s",
-            "time": "20 mins",
+            "time": 20,
             "load": 24,
             "units": "kilograms",
             "swings": 120,
@@ -131,7 +131,7 @@ TEST_DATA_FULL_CACHE = {
         {
             "bells": "Double Bells",
             "variation": "Double Traveling 2s",
-            "time": "30 mins",
+            "time": 30,
             "load": 28,
             "units": "kilograms",
             "swings": 120,
@@ -140,7 +140,7 @@ TEST_DATA_FULL_CACHE = {
         {
             "bells": "Single Bell",
             "variation": "Traveling 2s + Pullup",
-            "time": "30 mins",
+            "time": 30,
             "load": 20,
             "units": "kilograms",
             "swings": False,
@@ -149,7 +149,7 @@ TEST_DATA_FULL_CACHE = {
         {
             "bells": "Double Bells",
             "variation": "Double Traveling 2s",
-            "time": "10 mins",
+            "time": 10,
             "load": 24,
             "units": "kilograms",
             "swings": False,
@@ -158,7 +158,7 @@ TEST_DATA_FULL_CACHE = {
         {
             "bells": "Double Bells",
             "variation": "Double Classic + Pullup",
-            "time": "30 mins",
+            "time": 30,
             "load": 28,
             "units": "kilograms",
             "swings": 60,

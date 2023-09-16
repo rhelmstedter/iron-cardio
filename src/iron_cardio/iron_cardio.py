@@ -22,8 +22,8 @@ from .iron_cardio_database import read_database
 class Session:
     bells: str
     variation: str
-    time: str
-    load: str
+    time: int
+    load: int
     units: str
     swings: bool | int
     sets: int = 0
@@ -115,7 +115,7 @@ def display_session(session: Session) -> None:
     ====================
     Bells: {session.bells.title()}
     Variation: {session.variation}
-    Time: {session.time}
+    Time: {session.time} mins
     Load: {session.load} {session.units}
     {swings}
     """
