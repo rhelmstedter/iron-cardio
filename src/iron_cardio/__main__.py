@@ -64,7 +64,7 @@ def init(
 ) -> None:
     """Initializes the Iron Cardio database."""
     initialize_database(
-        iron_cardio_home=IRON_CARDIO_HOME, database=IRON_CARDIO_DB, force=force
+        iron_cardio_home=IRON_CARDIO_HOME, db_path=IRON_CARDIO_DB, force=force
     )
 
 
