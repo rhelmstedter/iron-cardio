@@ -32,8 +32,11 @@ class Session:
 console = Console()
 
 
-def create_session(db_path: Path):
-    """Create a random Iron Cardio Session."""
+def create_session(db_path: Path) -> Session:
+    """Create a random Iron Cardio Session.
+    :param db_path: The Path to the database.
+    :returns: A Session object with randomly generated parameters.
+    """
     data = read_database(db_path)
     loads = data["loads"]
     bells = choices(
@@ -70,7 +73,10 @@ def create_session(db_path: Path):
 
 
 def _get_options(session_param: dict) -> str:
-    """Select options for a given Session parameter."""
+    """Select options for a given Session parameter.
+    :param session_param: The dictionary containing options for a Session parameter.
+    :returns: A string consisting of the Session parameter choosen by the user.
+    """
     options = list(session_param.keys())
     for i, option in enumerate(options, 1):
         print(f"    [{i}] {option}")
@@ -78,8 +84,10 @@ def _get_options(session_param: dict) -> str:
     return options[selection - 1]
 
 
-def create_custom_session():
-    """Create a custom Iron Cardio session."""
+def create_custom_session() -> Session:
+    """Create a custom Iron Cardio session.
+    :returns: A Session object created by the user.
+    """
     bells = _get_options(BELLS)
     if bells == "Double Bells":
         variation = _get_options(DOUBLEBELL_VARIATIONS)
@@ -94,6 +102,9 @@ def create_custom_session():
 
 
 def display_session(session: Session) -> None:
+    """Print a session to the console.
+    :returns: None.
+    """
     if session.swings:
         swings = f"Swings: {session.swings} reps"
     else:
@@ -111,6 +122,9 @@ def display_session(session: Session) -> None:
 
 
 def _get_units():
+    """A helper function to get the units.
+    :returns: A string, either 'pounds' or 'kilograms'.
+    """
     while True:
         units = Prompt.ask("[P]ounds or [K]ilograms").lower()
         if units.startswith("p"):
@@ -125,6 +139,9 @@ def _get_units():
 
 
 def set_loads() -> dict:
+    """Creates a dictionary containing the units and kettlebell weights.
+    :returns: A dict of the loads set by the user.
+    """
     while True:
         units = _get_units()
         console.print("Enter the weight for the...")
@@ -147,7 +164,10 @@ def set_loads() -> dict:
     return loads
 
 
-def simulation():
+def simulation() -> None:
+    """A simulation of a year of generated sessions.
+    :returns: None.
+    """
     sessions = [create_session() for s in range(3 * 52)]
     stats = Counter()
     for session in sessions:
