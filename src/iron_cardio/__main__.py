@@ -4,7 +4,7 @@ from pathlib import Path
 import typer
 from rich import print
 from rich.console import Console
-from rich.prompt import Confirm
+from rich.prompt import Confirm, IntPrompt
 
 from . import __version__
 from .constants import IRON_CARDIO_DB, IRON_CARDIO_HOME
@@ -105,6 +105,7 @@ def done(
         console.print("Last workout generated:\n")
         ic.display_session(session)
     if Confirm.ask("Save this session?"):
+        session.sets = IntPrompt.ask("How many sets did you complete?")
         save_session(IRON_CARDIO_DB, session)
 
 

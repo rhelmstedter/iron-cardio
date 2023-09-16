@@ -8,7 +8,6 @@ from dataclasses import asdict
 from pathlib import Path
 
 from rich.console import Console
-from rich.prompt import IntPrompt
 
 console = Console()
 
@@ -61,7 +60,6 @@ def cache_session(db_path: Path, session) -> None:
 
 def save_session(db_path: Path, session) -> None:
     data = read_database(db_path)
-    session.sets = IntPrompt.ask("How many sets did you complete?")
     data["saved_sessions"].append(asdict(session))
     write_database(db_path, data)
 
@@ -74,6 +72,7 @@ def initialize_database(iron_cardio_home: Path, db_path: Path, force: bool) -> N
         console.print(
             "[yellow] Database base already exits. Run 'iron-cardio init --force' to overwrite database."
         )
+        return
     try:
         iron_cardio_home.mkdir()
     except FileExistsError:

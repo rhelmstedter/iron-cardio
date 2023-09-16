@@ -13,7 +13,7 @@ def test_version():
     assert f"{__version__}\n" in result.stdout
 
 
-def test_create_session():
+def test_session():
     result = runner.invoke(cli, ["session"])
     assert result.exit_code == 0
     assert "Iron Cardio Session" in result.stdout

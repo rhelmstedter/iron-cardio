@@ -1,126 +1,61 @@
-from pathlib import Path
 import json
-from tempfile import TemporaryDirectory
-from iron_cardio.iron_cardio_database import initialize_database
+from pathlib import Path
+from tempfile import TemporaryDirectory, NamedTemporaryFile
+import pytest
 
-TEST_DATA = {
-    "loads": {
-        "units": "kilograms",
-        "light load": 20,
-        "medium load": 24,
-        "heavy load": 28,
-    },
-    "saved_sessions": [
-        {
-            "bells": "Double Bells",
-            "variation": "Double Classic",
-            "time": "20 mins",
-            "load": 20,
-            "units": "kilograms",
-            "swings": False,
-            "sets": 29,
-        }
-    ],
-    "cached_sessions": [
-        {
-            "bells": "Single Bell",
-            "variation": "Classic",
-            "time": "10 mins",
-            "load": 28,
-            "units": "kilograms",
-            "swings": False,
-            "sets": 0,
-        },
-        {
-            "bells": "Double Bells",
-            "variation": "Double Classic",
-            "time": "10 mins",
-            "load": 24,
-            "units": "kilograms",
-            "swings": False,
-            "sets": 0,
-        },
-        {
-            "bells": "Single Bell",
-            "variation": "Traveling 2s + Snatch",
-            "time": "20 mins",
-            "load": 24,
-            "units": "kilograms",
-            "swings": 70,
-            "sets": 0,
-        },
-        {
-            "bells": "Double Bells",
-            "variation": "Double Classic",
-            "time": "10 mins",
-            "load": 28,
-            "units": "kilograms",
-            "swings": False,
-            "sets": 0,
-        },
-        {
-            "bells": "Single Bell",
-            "variation": "Traveling 2s + Snatch",
-            "time": "20 mins",
-            "load": 24,
-            "units": "kilograms",
-            "swings": False,
-            "sets": 0,
-        },
-        {
-            "bells": "Single Bell",
-            "variation": "Traveling 2s",
-            "time": "20 mins",
-            "load": 24,
-            "units": "kilograms",
-            "swings": 120,
-            "sets": 0,
-        },
-        {
-            "bells": "Double Bells",
-            "variation": "Double Traveling 2s",
-            "time": "30 mins",
-            "load": 28,
-            "units": "kilograms",
-            "swings": 120,
-            "sets": 0,
-        },
-        {
-            "bells": "Single Bell",
-            "variation": "Traveling 2s + Pullup",
-            "time": "30 mins",
-            "load": 20,
-            "units": "kilograms",
-            "swings": False,
-            "sets": 0,
-        },
-        {
-            "bells": "Double Bells",
-            "variation": "Double Traveling 2s",
-            "time": "10 mins",
-            "load": 24,
-            "units": "kilograms",
-            "swings": False,
-            "sets": 0,
-        },
-        {
-            "bells": "Double Bells",
-            "variation": "Double Classic + Pullup",
-            "time": "30 mins",
-            "load": 28,
-            "units": "kilograms",
-            "swings": 60,
-            "sets": 0,
-        },
-    ],
-}
+import iron_cardio.iron_cardio_database as ic_db
+from .test_constants import TEST_SESSION, TEST_DATA1, TEST_DATA2
 
 
-def test_initalize_database():
-    expected = {"loads": dict(), "saved_sessions": [], "cached_sessions": []}
+@pytest.fixture(scope="function")
+def database_home():
     with TemporaryDirectory() as db_dir:
         db_home = Path(db_dir)
-        db_file = db_home / "test_db.json"
-        initialize_database(db_home, db_file, False)
-        assert db_file.is_file()
-        assert json.load(open(db_file)) == expected
+        db_path = db_home / "test_db.json"
+        return db_path
+
+
+@pytest.fixture(scope="function")
+def database():
+    database = NamedTemporaryFile()
+    with open(database.name, "w") as db:
+        json.dump(TEST_DATA1, db)
+    return database
+
+
+def test_initalize_database(database_home):
+    expected = {"loads": dict(), "saved_sessions": [], "cached_sessions": []}
+    ic_db.initialize_database(database_home.parents[0], database_home, False)
+    assert database_home.is_file()
+    assert json.load(open(database_home)) == expected
+
+
+def test_read_no_database(database_home):
+    with pytest.raises(SystemExit):
+        ic_db.read_database(database_home)
+
+
+def test_write_database(database):
+    expected = TEST_DATA2
+    ic_db.write_database(database.name, TEST_DATA2)
+    actual = json.load(open(database.name))
+    assert actual == expected
+
+
+def test_read(database):
+    data = ic_db.read_database(Path(database.name))
+    assert data == TEST_DATA1
+
+
+def test_save_session(database):
+    ic_db.save_session(Path(database.name), TEST_SESSION)
+    data = json.load(open(database.name))
+    assert data["saved_sessions"][-1] == {
+        "bells": "Double Bells",
+        "variation": "Double Classic + Pullup",
+        "time": "30 mins",
+        "load": 28,
+        "units": "kilograms",
+        "swings": 60,
+        "sets": 20,
+    }
