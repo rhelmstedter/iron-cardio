@@ -6,10 +6,15 @@ from rich import print
 from rich.console import Console
 from rich.prompt import Confirm, IntPrompt
 
-import iron_cardio.iron_cardio as ic
-
 from . import __version__
 from .constants import IRON_CARDIO_DB, IRON_CARDIO_HOME
+from .iron_cardio import (
+    Session,
+    create_custom_session,
+    create_session,
+    display_session,
+    set_loads,
+)
 from .iron_cardio_database import (
     cache_session,
     confirm_loads,
@@ -64,11 +69,11 @@ def init(
 
 
 @cli.command()
-def loads(
+def setloads(
     ctx: typer.Context,
 ) -> None:
     """Set units and loads for iron cardio sessions."""
-    loads = ic.set_loads()
+    loads = set_loads()
     data = read_database(IRON_CARDIO_DB)
     data["loads"] = loads
     write_database(IRON_CARDIO_DB, data)
@@ -80,9 +85,9 @@ def session(
 ) -> None:
     """Create a random Iron Cardio session."""
     confirm_loads(IRON_CARDIO_DB)
-    session = ic.create_session(IRON_CARDIO_DB)
+    session = create_session(IRON_CARDIO_DB)
     cache_session(IRON_CARDIO_DB, session)
-    ic.display_session(session)
+    display_session(session)
 
 
 @cli.command()
@@ -98,13 +103,13 @@ def done(
     """Save an Iron Cardio session"""
     confirm_loads(IRON_CARDIO_DB)
     if custom:
-        session = ic.create_custom_session()
-        ic.display_session(session)
+        session = create_custom_session()
+        display_session(session)
     else:
         data = read_database(IRON_CARDIO_DB)
-        session = ic.Session(**data["cached_sessions"][-1])
+        session = Session(**data["cached_sessions"][-1])
         console.print("Last workout generated:\n")
-        ic.display_session(session)
+        display_session(session)
     if Confirm.ask("Save this session?"):
         session.sets = IntPrompt.ask("How many sets did you complete?")
         save_session(IRON_CARDIO_DB, session)

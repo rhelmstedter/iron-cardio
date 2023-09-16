@@ -36,7 +36,7 @@ def write_database(db_path: Path, data: dict) -> None:
 
 
 def confirm_loads(db_path: Path) -> None:
-    """Checks to make sure the loads have been set in the database.
+    """Checks if the loads have been set in the database.
     :param db_path: The Path to the database.
     :returns: None
     """
@@ -44,7 +44,7 @@ def confirm_loads(db_path: Path) -> None:
     if not data["loads"]:
         console.print("[red]:warning: Could not find loads in database.")
         console.print(
-            "[yellow] Try running [underline]iron-cardio loads[/underline] first."
+            "[yellow] Try running [underline]iron-cardio setloads[/underline] first."
         )
         sys.exit()
 
