@@ -1,5 +1,4 @@
 import json
-import shutil
 import sys
 from collections import deque
 from dataclasses import asdict
@@ -8,6 +7,28 @@ from pathlib import Path
 from rich.console import Console
 
 console = Console()
+
+
+def initialize_database(iron_cardio_home: Path, db_path: Path, force: bool) -> None:
+    """Creates the home directory and the JSON database.
+    :param iron_cardio_home: The home directory for the Iron Cardio database.
+    :param db_path: The Path to the database.
+    :param force: If True, overwrites the existing database with a blank one.
+    :returns: None
+    """
+    if iron_cardio_home.is_dir() and force:
+        pass
+    elif db_path.is_file():
+        console.print(
+            "[yellow] Database base already exits. Run 'iron-cardio init --force' to overwrite database."
+        )
+        return
+    try:
+        iron_cardio_home.mkdir()
+    except FileExistsError:
+        pass
+    data = {"loads": dict(), "saved_sessions": [], "cached_sessions": []}
+    write_database(db_path, data)
 
 
 def read_database(db_path: Path) -> json:
@@ -70,26 +91,4 @@ def save_session(db_path: Path, session) -> None:
     """
     data = read_database(db_path)
     data["saved_sessions"].append(asdict(session))
-    write_database(db_path, data)
-
-
-def initialize_database(iron_cardio_home: Path, db_path: Path, force: bool) -> None:
-    """Creates the home directory and the JSON database.
-    :param iron_cardio_home: The home directory for the Iron Cardio database.
-    :param db_path: The Path to the database.
-    :param force: If True, overwrites the existing database with a blank one.
-    :returns: None
-    """
-    if iron_cardio_home.is_dir() and force:
-        shutil.rmtree(iron_cardio_home)
-    elif db_path.is_file():
-        console.print(
-            "[yellow] Database base already exits. Run 'iron-cardio init --force' to overwrite database."
-        )
-        return
-    try:
-        iron_cardio_home.mkdir()
-    except FileExistsError:
-        pass
-    data = {"loads": dict(), "saved_sessions": [], "cached_sessions": []}
     write_database(db_path, data)
