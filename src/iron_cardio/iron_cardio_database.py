@@ -1,5 +1,3 @@
-from __future__ import annotations
-
 import json
 import shutil
 import sys
@@ -12,31 +10,36 @@ from rich.console import Console
 console = Console()
 
 
-def _database_exists(db_path: Path) -> None:
-    """Checks to make sure the database exists."""
+def read_database(db_path: Path) -> json:
+    """Read from the data base.
+    :param db_path: The Path to the database.
+    :returns: A json object of the data.
+    """
     if not db_path.is_file():
         console.print("[red]:warning: Could not find Iron Cardio database.")
         console.print(
             "[yellow] Try running [underline]iron-cardio init[/underline] first."
         )
         sys.exit()
-
-
-def read_database(db_path: Path) -> json:
-    """Read from the data base."""
-    _database_exists(db_path)
     with open(db_path) as db:
         return json.load(db)
 
 
 def write_database(db_path: Path, data: dict) -> None:
-    """Write data to database."""
+    """Write data to database.
+    :param db_path: The Path to the database.
+    :param data: The new version of the database to write.
+    :returns: None
+    """
     with open(db_path, "w") as db:
         json.dump(data, db)
 
 
 def confirm_loads(db_path: Path) -> None:
-    """Checks to make sure the loads have been set in the database."""
+    """Checks to make sure the loads have been set in the database.
+    :param db_path: The Path to the database.
+    :returns: None
+    """
     data = read_database(db_path)
     if not data["loads"]:
         console.print("[red]:warning: Could not find loads in database.")
@@ -47,9 +50,10 @@ def confirm_loads(db_path: Path) -> None:
 
 
 def cache_session(db_path: Path, session) -> None:
-    """
-    Cache last 10 generated sessions.
-    :param session: Session object to be stored in the cache
+    """Cache last 10 generated sessions.
+    :param db_path: The Path to the database.
+    :param session: Session object to be stored in the cache.
+    :returns: None
     """
     data = read_database(db_path)
     cache = deque(data["cached_sessions"], maxlen=10)
@@ -59,13 +63,23 @@ def cache_session(db_path: Path, session) -> None:
 
 
 def save_session(db_path: Path, session) -> None:
+    """Save a session in the database.
+    :param db_path: The Path to the database.
+    :param session: Session object to be stored in the database.
+    :returns: None
+    """
     data = read_database(db_path)
     data["saved_sessions"].append(asdict(session))
     write_database(db_path, data)
 
 
 def initialize_database(iron_cardio_home: Path, db_path: Path, force: bool) -> None:
-    """Creates the home directory and the JSON database."""
+    """Creates the home directory and the JSON database.
+    :param iron_cardio_home: The home directory for the Iron Cardio database.
+    :param db_path: The Path to the database.
+    :param force: If True, overwrites the existing database with a blank one.
+    :returns: None
+    """
     if iron_cardio_home.is_dir() and force:
         shutil.rmtree(iron_cardio_home)
     elif db_path.is_file():
