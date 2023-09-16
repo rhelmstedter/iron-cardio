@@ -165,19 +165,19 @@ def set_loads() -> dict:
     return loads
 
 
-def simulation() -> None:
-    """A simulation of a year of generated sessions.
-    :returns: None.
-    """
-    sessions = [create_session() for s in range(3 * 52)]
-    stats = Counter()
-    for session in sessions:
-        for c in session:
-            if isinstance(c, int):
-                c = "Swings"
-            stats.update([c])
-    one_year = dict(sorted(stats.items(), key=lambda x: x[1], reverse=True))
-    width = len(max(one_year.keys(), key=len))
-    for session, count in one_year.items():
-        print(f"{session: >{width}}: " + "#" * count)
-        print(f"{session: >{width}}: " + "#" * count)
+# def simulation() -> None:
+#     """A simulation of a year of generated sessions.
+#     :returns: None.
+#     """
+#     sessions = [create_session() for s in range(3 * 52)]
+#     stats = Counter()
+#     for session in sessions:
+#         for c in session:
+#             if isinstance(c, int):
+#                 c = "Swings"
+#             stats.update([c])
+#     one_year = dict(sorted(stats.items(), key=lambda x: x[1], reverse=True))
+#     width = len(max(one_year.keys(), key=len))
+#     for session, count in one_year.items():
+#         print(f"{session: >{width}}: " + "#" * count)
+#         print(f"{session: >{width}}: " + "#" * count)

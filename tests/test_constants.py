@@ -12,6 +12,18 @@ TEST_SESSION = Session(
     }
 )
 
+TEST_SESSION_NO_SWINGS = Session(
+    **{
+        "bells": "Single Bell",
+        "variation": "Traveling 2s + Snatch",
+        "time": 20,
+        "load": 24,
+        "units": "kilograms",
+        "swings": False,
+        "sets": 0,
+    },
+)
+
 TEST_CACHE_SESSION = Session(
     **{
         "bells": "Double Bells",
