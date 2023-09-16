@@ -103,6 +103,7 @@ def create_custom_session() -> Session:
 
 def display_session(session: Session) -> None:
     """Print a session to the console.
+    :param session: The Session object to be displayed in the console.
     :returns: None.
     """
     if session.swings:
