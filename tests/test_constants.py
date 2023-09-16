@@ -12,7 +12,19 @@ TEST_SESSION = Session(
     }
 )
 
-TEST_DATA1 = {
+TEST_CACHE_SESSION = Session(
+    **{
+        "bells": "Double Bells",
+        "variation": "Double Classic",
+        "time": "20 mins",
+        "load": 20,
+        "units": "kilograms",
+        "swings": False,
+        "sets": 0,
+    }
+)
+
+TEST_DATA = {
     "loads": {
         "units": "kilograms",
         "light load": 20,
@@ -43,7 +55,7 @@ TEST_DATA1 = {
     ],
 }
 
-TEST_DATA2 = {
+TEST_DATA_FULL_CACHE = {
     "loads": {
         "units": "kilograms",
         "light load": 20,
