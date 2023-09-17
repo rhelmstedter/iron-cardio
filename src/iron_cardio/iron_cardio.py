@@ -1,4 +1,3 @@
-from collections import Counter
 from dataclasses import dataclass
 from pathlib import Path
 from random import choice, choices
@@ -137,7 +136,7 @@ def _get_units():
         elif units.startswith("k"):
             units = "kilograms"
         else:
-            console.print("Please enter a p or k")
+            console.print("[yellow]Please enter a p or k[/yellow]")
             continue
         break
     return units

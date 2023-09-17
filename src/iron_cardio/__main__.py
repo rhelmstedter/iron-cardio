@@ -114,7 +114,7 @@ def done(
     if Confirm.ask("Save this session?"):
         while True:
             session_date = Prompt.ask(
-                "Enter the date of the workout (YYYY-MM-DD), or press enter for today."
+                "Enter the date of the workout (YYYY-MM-DD), or press enter for today"
             )
             if not session_date:
                 session_date = date.today().strftime("%Y-%m-%d")
