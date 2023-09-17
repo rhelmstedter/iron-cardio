@@ -1,10 +1,11 @@
 import sys
 from pathlib import Path
+from datetime import date, datetime
 
 import typer
 from rich import print
 from rich.console import Console
-from rich.prompt import Confirm, IntPrompt
+from rich.prompt import Confirm, IntPrompt, Prompt
 
 from . import __version__
 from .constants import IRON_CARDIO_DB, IRON_CARDIO_HOME
@@ -111,8 +112,20 @@ def done(
         console.print("Last workout generated:\n")
         display_session(session)
     if Confirm.ask("Save this session?"):
+        while True:
+            session_date = Prompt.ask(
+                "Enter the date of the workout (YYYY-MM-DD), or press enter for today."
+            )
+            if not session_date:
+                session_date = date.today().strftime("%Y-%m-%d")
+            try:
+                datetime.strptime(session_date, "%Y-%m-%d")
+                break
+            except ValueError:
+                console.print("[yellow]Please enter a valid date[/yellow]")
+                continue
         session.sets = IntPrompt.ask("How many sets did you complete?")
-        save_session(IRON_CARDIO_DB, session)
+        save_session(IRON_CARDIO_DB, session_date, session)
 
 
 if __name__ == "__main__":

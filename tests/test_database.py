@@ -63,16 +63,19 @@ def test_read_database(database):
 
 
 def test_save_session(database):
-    ic_db.save_session(Path(database.name), TEST_SESSION)
+    ic_db.save_session(Path(database.name), "2023-09-14", TEST_SESSION)
     data = json.load(open(database.name))
     assert data["saved_sessions"][-1] == {
-        "bells": "Double Bells",
-        "variation": "Double Classic + Pullup",
-        "time": 30,
-        "load": 28,
-        "units": "kilograms",
-        "swings": 60,
-        "sets": 20,
+        "date": "2023-09-14",
+        "session": {
+            "bells": "Double Bells",
+            "variation": "Double Classic + Pullup",
+            "time": 30,
+            "load": 28,
+            "units": "kilograms",
+            "swings": 60,
+            "sets": 20,
+        },
     }
 
 

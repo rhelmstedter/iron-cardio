@@ -45,14 +45,17 @@ TEST_DATA = {
     },
     "saved_sessions": [
         {
-            "bells": "Double Bells",
-            "variation": "Double Classic",
-            "time": 20,
-            "load": 20,
-            "units": "kilograms",
-            "swings": False,
-            "sets": 29,
-        }
+            "date": "2023-09-14",
+            "session": {
+                "bells": "Double Bells",
+                "variation": "Double Classic",
+                "time": 20,
+                "load": 20,
+                "units": "kilograms",
+                "swings": False,
+                "sets": 29,
+            },
+        },
     ],
     "cached_sessions": [
         {
@@ -76,14 +79,17 @@ TEST_DATA_FULL_CACHE = {
     },
     "saved_sessions": [
         {
-            "bells": "Double Bells",
-            "variation": "Double Classic",
-            "time": 20,
-            "load": 20,
-            "units": "kilograms",
-            "swings": False,
-            "sets": 29,
-        }
+            "date": "2023-09-14",
+            "session": {
+                "bells": "Double Bells",
+                "variation": "Double Classic",
+                "time": 20,
+                "load": 20,
+                "units": "kilograms",
+                "swings": False,
+                "sets": 29,
+            },
+        },
     ],
     "cached_sessions": [
         {

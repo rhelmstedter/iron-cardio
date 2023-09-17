@@ -83,12 +83,13 @@ def cache_session(db_path: Path, session) -> None:
     write_database(db_path, data)
 
 
-def save_session(db_path: Path, session) -> None:
+def save_session(db_path: Path, session_date: str, session) -> None:
     """Save a session in the database.
     :param db_path: The Path to the database.
+    :param session_date: The date of the workout.
     :param session: Session object to be stored in the database.
     :returns: None
     """
     data = read_database(db_path)
-    data["saved_sessions"].append(asdict(session))
+    data["saved_sessions"].append({"date": session_date, "session": asdict(session)})
     write_database(db_path, data)
