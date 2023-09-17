@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "iron-cardio"
-version = "0.1.2"
+version = "0.1.3"
 description = "A CLI tool to create, save, and track progress of Iron Cardio sessions."
 authors = ["Russell Helmstedter <rhelmstedter@gmail.com>"]
 readme = "README.md"
