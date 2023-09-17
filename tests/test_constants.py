@@ -19,7 +19,7 @@ TEST_SESSION_NO_SWINGS = Session(
         "time": 20,
         "load": 24,
         "units": "kilograms",
-        "swings": False,
+        "swings": 0,
         "sets": 0,
     },
 )
@@ -31,7 +31,7 @@ TEST_CACHE_SESSION = Session(
         "time": 20,
         "load": 20,
         "units": "kilograms",
-        "swings": False,
+        "swings": 0,
         "sets": 0,
     }
 )
@@ -52,7 +52,7 @@ TEST_DATA = {
                 "time": 20,
                 "load": 20,
                 "units": "kilograms",
-                "swings": False,
+                "swings": 0,
                 "sets": 29,
             },
         },
@@ -64,7 +64,7 @@ TEST_DATA = {
             "time": 10,
             "load": 28,
             "units": "kilograms",
-            "swings": False,
+            "swings": 0,
             "sets": 0,
         },
     ],
@@ -86,7 +86,7 @@ TEST_DATA_FULL_CACHE = {
                 "time": 20,
                 "load": 20,
                 "units": "kilograms",
-                "swings": False,
+                "swings": 0,
                 "sets": 29,
             },
         },
@@ -98,7 +98,7 @@ TEST_DATA_FULL_CACHE = {
             "time": 10,
             "load": 28,
             "units": "kilograms",
-            "swings": False,
+            "swings": 0,
             "sets": 0,
         },
         {
@@ -107,7 +107,7 @@ TEST_DATA_FULL_CACHE = {
             "time": 10,
             "load": 24,
             "units": "kilograms",
-            "swings": False,
+            "swings": 0,
             "sets": 0,
         },
         {
@@ -125,7 +125,7 @@ TEST_DATA_FULL_CACHE = {
             "time": 10,
             "load": 28,
             "units": "kilograms",
-            "swings": False,
+            "swings": 0,
             "sets": 0,
         },
         {
@@ -134,7 +134,7 @@ TEST_DATA_FULL_CACHE = {
             "time": 20,
             "load": 24,
             "units": "kilograms",
-            "swings": False,
+            "swings": 0,
             "sets": 0,
         },
         {
@@ -161,7 +161,7 @@ TEST_DATA_FULL_CACHE = {
             "time": 30,
             "load": 20,
             "units": "kilograms",
-            "swings": False,
+            "swings": 0,
             "sets": 0,
         },
         {
@@ -170,7 +170,7 @@ TEST_DATA_FULL_CACHE = {
             "time": 10,
             "load": 24,
             "units": "kilograms",
-            "swings": False,
+            "swings": 0,
             "sets": 0,
         },
         {

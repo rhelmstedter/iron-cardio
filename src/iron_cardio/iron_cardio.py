@@ -25,7 +25,7 @@ class Session:
     time: int
     load: int
     units: str
-    swings: bool | int
+    swings: int
     sets: int = 0
 
 
@@ -69,6 +69,8 @@ def create_session(db_path: Path) -> Session:
     )[0]
     if swings:
         swings = choice(range(50, 160, 10))
+    else:
+        swings = 0
     return Session(bells, variation, time, load, units, swings)
 
 
@@ -98,6 +100,8 @@ def create_custom_session() -> Session:
     load = IntPrompt.ask(f"What weight did you use (in {units})")
     if Confirm.ask("Did you swing"):
         swings = IntPrompt.ask("How many swings")
+    else:
+        swings = 0
     return Session(bells, variation, time, load, units, swings)
 
 

@@ -37,7 +37,7 @@ def test_create_session(database):
     assert actual.time in TIMES.keys()
     assert actual.load in loads.values()
     assert actual.units == loads["units"]
-    assert actual.swings is False or actual.swings in POSSIBLE_SWINGS
+    assert actual.swings == 0 or actual.swings in POSSIBLE_SWINGS
 
 
 def test_display_session(capfd):
