@@ -20,7 +20,7 @@ TEST_SESSION_NO_SWINGS = Session(
         "load": 24,
         "units": "kilograms",
         "swings": 0,
-        "sets": 0,
+        "sets": 16,
     },
 )
 
@@ -39,6 +39,7 @@ TEST_CACHE_SESSION = Session(
 TEST_DATA = {
     "loads": {
         "units": "kilograms",
+        "bodyweight": 90,
         "light load": 20,
         "medium load": 24,
         "heavy load": 28,

@@ -31,3 +31,4 @@ LOADS = {
     "light load": 1 / 6,
 }
 SWINGS = {True: 2 / 6, False: 4 / 6}
+DATE_FORMAT = "%Y-%m-%d"

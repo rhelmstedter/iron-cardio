@@ -68,8 +68,14 @@ def test_display_session_no_swings(capfd):
 @mock.patch("iron_cardio.iron_cardio.Confirm")
 @mock.patch("iron_cardio.iron_cardio._get_units")
 def test_set_loads(units_mock, confirm_mock, int_mock):
-    expected = {"units": "pounds", "light load": 1, "medium load": 2, "heavy load": 3}
-    int_mock.side_effect = [1, 2, 3]
+    expected = {
+        "units": "pounds",
+        "bodyweight": 190,
+        "light load": 1,
+        "medium load": 2,
+        "heavy load": 3,
+    }
+    int_mock.side_effect = [190, 1, 2, 3]  # [body_weight, light, med, heavy]
     confirm_mock.side_effect = ["y"]
     units_mock.side_effect = ["pounds"]
     actual = set_loads()
@@ -105,7 +111,13 @@ def test_get_options(ask_mock, session_param, response, option):
     "session, bells, variation, int_responses, sets",
     [
         (TEST_SESSION, "Double Bells", "Double Classic + Pullup", [30, 28, 60], 20),
-        (TEST_SESSION_NO_SWINGS, "Single Bell", "Traveling 2s + Snatch", [20, 24, 0], 0),
+        (
+            TEST_SESSION_NO_SWINGS,
+            "Single Bell",
+            "Traveling 2s + Snatch",
+            [20, 24, 0],
+            16,
+        ),
     ],
 )
 @mock.patch("iron_cardio.iron_cardio.IntPrompt.ask")

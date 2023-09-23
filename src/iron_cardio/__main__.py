@@ -8,7 +8,7 @@ from rich.console import Console
 from rich.prompt import Confirm, IntPrompt, Prompt
 
 from . import __version__
-from .constants import IRON_CARDIO_DB, IRON_CARDIO_HOME
+from .constants import IRON_CARDIO_DB, IRON_CARDIO_HOME, DATE_FORMAT
 from .iron_cardio import (
     Session,
     create_custom_session,
@@ -65,7 +65,9 @@ def init(
 ) -> None:
     """Initializes the Iron Cardio database."""
     initialize_database(
-        iron_cardio_home=IRON_CARDIO_HOME, db_path=IRON_CARDIO_DB, force=force
+        iron_cardio_home=IRON_CARDIO_HOME,
+        db_path=IRON_CARDIO_DB,
+        force=force,
     )
 
 
@@ -117,9 +119,9 @@ def done(
                 "Enter the date of the workout (YYYY-MM-DD), or press enter for today"
             )
             if not session_date:
-                session_date = date.today().strftime("%Y-%m-%d")
+                session_date = date.today().strftime(DATE_FORMAT)
             try:
-                datetime.strptime(session_date, "%Y-%m-%d")
+                datetime.strptime(session_date, DATE_FORMAT)
                 break
             except ValueError:
                 console.print("[yellow]Please enter a valid date[/yellow]")

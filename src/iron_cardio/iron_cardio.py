@@ -143,17 +143,20 @@ def _get_units():
 
 
 def set_loads() -> dict:
-    """Creates a dictionary containing the units and kettlebell weights.
+    """Creates a dictionary containing the units and kettlebell weights and body weight
+    of the user.
     :returns: A dict of the loads set by the user.
     """
     while True:
         units = _get_units()
+        bodyweight = IntPrompt.ask("Bodyweight")
         console.print("Enter the weight for the...")
         light_load = IntPrompt.ask("Light kettlebell")
         medium_load = IntPrompt.ask("Medium kettlebell")
         heavy_load = IntPrompt.ask("Heavy kettlebell")
         loads = {
             "units": units,
+            "bodyweight": bodyweight,
             "light load": light_load,
             "medium load": medium_load,
             "heavy load": heavy_load,
