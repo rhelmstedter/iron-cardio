@@ -24,6 +24,18 @@ TEST_SESSION_NO_SWINGS = Session(
     },
 )
 
+TEST_SESSION_SINGLE_BELL_PULLUPS = Session(
+    **{
+        "bells": "Single Bell",
+        "variation": "Classic + Pullup",
+        "time": 10,
+        "load": 20,
+        "units": "kilograms",
+        "swings": 100,
+        "sets": 10,
+    },
+)
+
 TEST_CACHE_SESSION = Session(
     **{
         "bells": "Double Bells",

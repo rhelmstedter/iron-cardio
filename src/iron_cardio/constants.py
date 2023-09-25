@@ -13,12 +13,13 @@ DOUBLEBELL_VARIATIONS = {
     "SFG II Focus": 1 / 6,
 }
 SINGLEBELL_VARIATIONS = {
-    "Classic": 1 / 6,
-    "Classic + Pullup": 1 / 6,
-    "Classic + Snatch": 1 / 6,
-    "Traveling 2s": 1 / 6,
-    "Traveling 2s + Snatch": 1 / 6,
-    "Traveling 2s + Pullup": 1 / 6,
+    "Classic": 1 / 7,
+    "Classic + Pullup": 1 / 7,
+    "Classic + Snatch": 1 / 7,
+    "Traveling 2s": 1 / 7,
+    "Traveling 2s + Snatch": 1 / 7,
+    "Traveling 2s + Pullup": 1 / 7,
+    "Single Bell Armor Building Complex": 1 / 7,
 }
 TIMES = {
     30: 1 / 6,
@@ -32,3 +33,16 @@ LOADS = {
 }
 SWINGS = {True: 2 / 6, False: 4 / 6}
 DATE_FORMAT = "%Y-%m-%d"
+REP_SCHEMES = {
+    "Classic": 3,
+    "Classic + Pullup": 3,
+    "Double Classic": 3,
+    "Double Classic + Pullup": 3,
+    "SFG II Focus": 3,
+    "Classic + Snatch": 4,
+    "Traveling 2s": 4,
+    "Traveling 2s + Pullup": 4,
+    "Double Traveling 2s": 4,
+    "Traveling 2s + Snatch": 5,
+    "Single Bell Armor Building Complex": 6,
+}

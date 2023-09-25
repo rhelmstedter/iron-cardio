@@ -1,81 +1,36 @@
+from .constants import REP_SCHEMES
+
+
 def calc_session_stats(session, bodyweight: int) -> dict:
     """Calculate the stats for a given session.
     :param session: The session for which to calculate the stats.
     :param bodyweight: The user's bodyweight at time of the session.
     :returns: A dict containing total weight moved, number of reps, and the pace.
     """
-    formulas = {
-        "Double Classic": {
-            "weight moved": 2 * 3 * session.sets * session.load
-            + (session.swings * session.load),
-            "reps": 3 * session.sets,
-            "pace": (session.time * 60) / (3 * session.sets),
-        },
-        "Double Classic + Pullup": {
-            "weight moved": (
-                2 * 3 * session.sets * session.load
-                + (session.swings * session.load)
-                + bodyweight * session.sets
-            ),
-            "reps": 4 * session.sets,
-            "pace": (session.time * 60) / (4 * session.sets),
-        },
-        "Double Traveling 2s": {
-            "weight moved": 2 * 4 * session.sets * session.load
-            + (session.swings * session.load),
-            "reps": 4 * session.sets,
-            "pace": (session.time * 60) / (4 * session.sets),
-        },
-        "SFG II Focus": {
-            "weight moved": 2 * 3 * session.sets * session.load
-            + (session.swings * session.load),
-            "reps": 3 * session.sets,
-            "pace": (session.time * 60) / (3 * session.sets),
-        },
-        "Classic": {
-            "weight moved": 3 * session.sets * session.load
-            + (session.swings * session.load),
-            "reps": 3 * session.sets,
-            "pace": (session.time * 60) / (3 * session.sets),
-        },
-        "Classic + Pullup": {
-            "weight moved": (
-                3 * session.sets * session.load
-                + (session.swings * session.load)
-                + bodyweight * session.sets // 2
-            ),
-            "reps": 3 * session.sets + session.sets // 2,
-            "pace": (session.time * 60) / (3 * session.sets + session.sets // 2),
-        },
-        "Classic + Snatch": {
-            "weight moved": 4 * session.sets * session.load
-            + (session.swings * session.load),
-            "reps": 4 * session.sets,
-            "pace": (session.time * 60) / (4 * session.sets),
-        },
-        "Traveling 2s": {
-            "weight moved": 4 * session.sets * session.load
-            + (session.swings * session.load),
-            "reps": 4 * session.sets,
-            "pace": (session.time * 60) / (4 * session.sets),
-        },
-        "Traveling 2s + Snatch": {
-            "weight moved": 5 * session.sets * session.load
-            + (session.swings * session.load),
-            "reps": 5 * session.sets,
-            "pace": (session.time * 60) / (5 * session.sets),
-        },
-        "Traveling 2s + Pullup": {
-            "weight moved": (
-                4 * session.sets * session.load
-                + (session.swings * session.load)
-                + bodyweight * session.sets // 2
-            ),
-            "reps": 3 * session.sets + session.sets // 2,
-            "pace": (session.time * 60) / (4 * session.sets + session.sets // 2),
-        },
+    reps = REP_SCHEMES[session.variation] * session.sets
+
+    if session.bells == "Double Bells":
+        load_factor = 2
+    else:
+        load_factor = 1
+
+    if "Pullup" in session.variation and session.bells == "Double Bells":
+        pullup_factor = 1
+    elif "Pullup" in session.variation and session.bells == "Single Bell":
+        pullup_factor = 0.5
+    else:
+        pullup_factor = 0
+
+    stats = {
+        "weight moved": (
+            REP_SCHEMES[session.variation] * session.load * load_factor * session.sets
+            + (session.swings * session.load)
+            + (bodyweight * int(session.sets * pullup_factor))
+        ),
+        "reps": reps + int(session.sets * pullup_factor),
+        "pace": (session.time * 60) / (reps + (session.sets * pullup_factor)),
     }
-    return formulas[session.variation]
+    return stats
 
 
 def display_session_stats(session, bodyweight):
