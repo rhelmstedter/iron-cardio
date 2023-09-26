@@ -22,12 +22,10 @@ def test_display_session_stats_no_swings():
 def test_display_session_stats_single_bell_pullups(capfd):
     display_session_stats(TEST_SESSION_SINGLE_BELL_PULLUPS, 90)
     output = capfd.readouterr()[0]
-    expected = """
-Session Stats
+    expected = """Session Stats
 =============
-    Time: 10 mins
-    Total Reps: 35
-    Weight Moved: 3,050 kilograms
-    Pace: 17.1 sec/rep
+Weight Moved: 3,050 kilograms
+  Total Reps: 35
+        Pace: 17.1 sec/rep
 """
     assert expected in output

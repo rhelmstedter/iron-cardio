@@ -44,7 +44,7 @@ def test_display_session(capfd):
     display_session(TEST_SESSION)
     output = capfd.readouterr()[0]
     assert "Iron Cardio Session" in output
-    assert "====================" in output
+    assert "===================" in output
     assert "Bells: " in output
     assert "Variation: " in output
     assert "Time: " in output
@@ -56,7 +56,7 @@ def test_display_session_no_swings(capfd):
     display_session(TEST_SESSION_NO_SWINGS)
     output = capfd.readouterr()[0]
     assert "Iron Cardio Session" in output
-    assert "====================" in output
+    assert "===================" in output
     assert "Bells: " in output
     assert "Variation: " in output
     assert "Time: " in output

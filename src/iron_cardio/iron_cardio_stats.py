@@ -1,3 +1,5 @@
+from rich import print
+
 from .constants import REP_SCHEMES
 
 
@@ -37,11 +39,10 @@ def display_session_stats(session, bodyweight):
     """Prints the stats for a given session."""
     stats = calc_session_stats(session, bodyweight)
     print(
-        f"""
-Session Stats
-=============
-    Time: {session.time} mins
-    Total Reps: {stats.get("reps")}
-    Weight Moved: {stats.get("weight moved"):,} {session.units}
-    Pace: {round(stats.get("pace"), 1)} sec/rep"""
+        f"""Session Stats
+[green]=============[/green]
+Weight Moved: {stats.get("weight moved"):,} {session.units}
+  Total Reps: {stats.get("reps")}
+        Pace: {round(stats.get("pace"), 1)} sec/rep
+    """
     )

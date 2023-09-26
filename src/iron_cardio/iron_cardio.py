@@ -60,12 +60,12 @@ def create_session(db_path: Path) -> Session:
         population=tuple(LOADS.keys()),
         weights=tuple(LOADS.values()),
     )[0]
-    load = loads[load]
-    units = loads["units"]
     swings = choices(
         population=tuple(SWINGS.keys()),
         weights=tuple(SWINGS.values()),
     )[0]
+    load = loads[load]
+    units = loads["units"]
     if swings:
         swings = choice(range(50, 160, 10))
     else:
@@ -110,17 +110,17 @@ def display_session(session: Session) -> None:
     :returns: None.
     """
     if session.swings:
-        swings = f"Swings: {session.swings} reps"
+        swings = f"   Swings: {session.swings} reps"
     else:
         swings = ""
     print(
         f"""Iron Cardio Session
-    ====================
+[green]===================[/green]
     Bells: {session.bells.title()}
-    Variation: {session.variation}
-    Time: {session.time} mins
-    Load: {session.load} {session.units}
-    {swings}
+Variation: {session.variation}
+     Time: {session.time} mins
+     Load: {session.load} {session.units}
+{swings}
     """
     )
 
