@@ -24,6 +24,7 @@ from .iron_cardio_database import (
     save_session,
     write_database,
 )
+from .iron_cardio_stats import display_session_stats
 
 cli = typer.Typer(add_completion=False)
 
@@ -105,11 +106,11 @@ def done(
 ) -> None:
     """Save an Iron Cardio session"""
     confirm_loads(IRON_CARDIO_DB)
+    data = read_database(IRON_CARDIO_DB)
     if custom:
         session = create_custom_session()
         display_session(session)
     else:
-        data = read_database(IRON_CARDIO_DB)
         session = Session(**data["cached_sessions"][-1])
         console.print("Last workout generated:\n")
         display_session(session)
@@ -128,6 +129,23 @@ def done(
                 continue
         session.sets = IntPrompt.ask("How many sets did you complete?")
         save_session(IRON_CARDIO_DB, session_date, session)
+        bodyweight = data["loads"]["bodyweight"]
+        display_session_stats(session, bodyweight)
+
+
+@cli.command()
+def last(
+    ctx: typer.Context,
+) -> None:
+    """Display stats from most recent session in database."""
+    data = read_database(IRON_CARDIO_DB)
+    last_session = data["saved_sessions"][-1]
+    session_date = last_session["date"]
+    session = Session(**last_session["session"])
+    bodyweight = data["loads"]["bodyweight"]
+    print(f"Date: [green]{datetime.strptime(session_date, DATE_FORMAT): %b %d, %Y}\n")
+    display_session(session)
+    display_session_stats(session, bodyweight)
 
 
 if __name__ == "__main__":
