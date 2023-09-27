@@ -1,6 +1,6 @@
 import sys
-from pathlib import Path
 from datetime import date, datetime
+from pathlib import Path
 
 import typer
 from rich import print
@@ -8,7 +8,7 @@ from rich.console import Console
 from rich.prompt import Confirm, IntPrompt, Prompt
 
 from . import __version__
-from .constants import IRON_CARDIO_DB, IRON_CARDIO_HOME, DATE_FORMAT
+from .constants import DATE_FORMAT, IRON_CARDIO_DB, IRON_CARDIO_HOME
 from .iron_cardio import (
     Session,
     create_custom_session,
@@ -24,7 +24,7 @@ from .iron_cardio_database import (
     save_session,
     write_database,
 )
-from .iron_cardio_stats import display_session_stats
+from .iron_cardio_stats import display_session_stats, get_all_time_stats, plot_sessions
 
 cli = typer.Typer(add_completion=False)
 
@@ -96,6 +96,7 @@ def session(
 
 @cli.command()
 def done(
+    ctx: typer.Context,
     custom: bool = typer.Option(
         False,
         "--custom",
@@ -130,6 +131,7 @@ def done(
         session.sets = IntPrompt.ask("How many sets did you complete?")
         save_session(IRON_CARDIO_DB, session_date, session)
         bodyweight = data["loads"]["bodyweight"]
+        print()
         display_session_stats(session, bodyweight)
 
 
@@ -143,9 +145,27 @@ def last(
     session_date = last_session["date"]
     session = Session(**last_session["session"])
     bodyweight = data["loads"]["bodyweight"]
-    print(f"Date: [green]{datetime.strptime(session_date, DATE_FORMAT): %b %d, %Y}\n")
+    print(f"\nDate: [green]{datetime.strptime(session_date, DATE_FORMAT): %b %d, %Y}\n")
     display_session(session)
     display_session_stats(session, bodyweight)
+
+
+@cli.command()
+def stats(
+    ctx: typer.Context,
+    plot: bool = typer.Option(
+        False,
+        "--plot",
+        "-p",
+        is_flag=True,
+        is_eager=True,
+    )
+) -> None:
+    """Display stats from most recent session in database."""
+    data = read_database(IRON_CARDIO_DB)
+    dates, weight_per_session = get_all_time_stats(data)
+    if plot:
+        plot_sessions(dates, weight_per_session)
 
 
 if __name__ == "__main__":

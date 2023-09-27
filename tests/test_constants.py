@@ -86,6 +86,7 @@ TEST_DATA = {
 TEST_DATA_FULL_CACHE = {
     "loads": {
         "units": "kilograms",
+        "bodyweight": 90,
         "light load": 20,
         "medium load": 24,
         "heavy load": 28,

@@ -96,7 +96,7 @@ def test_get_units_good_input(ask_mock, response, units):
     [
         (BELLS, 1, "Single Bell"),
         (SINGLEBELL_VARIATIONS, 3, "Classic + Snatch"),
-        (DOUBLEBELL_VARIATIONS, 4, "SFG II Focus"),
+        (DOUBLEBELL_VARIATIONS, 4, "Armor Building Complex"),
     ],
 )
 @mock.patch("iron_cardio.iron_cardio.IntPrompt.ask")

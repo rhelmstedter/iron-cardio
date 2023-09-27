@@ -164,6 +164,22 @@ files = [
 ]
 
 [[package]]
+name = "plotext"
+version = "5.2.8"
+description = "plotext plots directly on terminal"
+optional = false
+python-versions = ">=3.5"
+files = [
+    {file = "plotext-5.2.8-py3-none-any.whl", hash = "sha256:7364cf72e6c9bffaf96158340fd2e0058faf404edbbc1e7a2aed421c8638d475"},
+    {file = "plotext-5.2.8.tar.gz", hash = "sha256:319a287baabeb8576a711995f973a2eba631c887aa6b0f33ab016f12c50ffebe"},
+]
+
+[package.extras]
+completion = ["shtab"]
+image = ["pillow (>=8.4)"]
+video = ["ffpyplayer (>=4.3.5)", "opencv-python (>=4.5.5)", "pafy (>=0.5.5)", "pillow (>=8.4)", "youtube-dl (==2020.12.2)"]
+
+[[package]]
 name = "pluggy"
 version = "1.3.0"
 description = "plugin and hook calling mechanisms for python"
@@ -296,4 +312,4 @@ files = [
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.10"
-content-hash = "7cce0ecb42def15cacaa6c7b5e3cf9272e143b776682428db177f5a37140171f"
+content-hash = "8e1f26c3b11612d5a92bafd05885b4ebd4fb9c8e560da22002a53cb9a57ae6bd"
