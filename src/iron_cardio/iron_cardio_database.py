@@ -2,9 +2,12 @@ import json
 import sys
 from collections import deque
 from dataclasses import asdict
+from datetime import datetime
 from pathlib import Path
 
 from rich.console import Console
+
+from .constants import DATE_FORMAT
 
 console = Console()
 
@@ -92,4 +95,5 @@ def save_session(db_path: Path, session_date: str, session) -> None:
     """
     data = read_database(db_path)
     data["saved_sessions"].append({"date": session_date, "session": asdict(session)})
+    data["saved_sessions"] = sorted(data['saved_sessions'], key=lambda x: datetime.strptime(x['date'], DATE_FORMAT))
     write_database(db_path, data)
