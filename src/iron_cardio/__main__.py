@@ -4,10 +4,10 @@ from pathlib import Path
 
 import typer
 from rich import print
-from rich.console import Console
 from rich.prompt import Confirm, IntPrompt, Prompt
 
 from . import __version__
+from .console import console
 from .constants import DATE_FORMAT, IRON_CARDIO_DB, IRON_CARDIO_HOME
 from .iron_cardio import (
     Session,
@@ -24,11 +24,14 @@ from .iron_cardio_database import (
     save_session,
     write_database,
 )
-from .iron_cardio_stats import display_session_stats, get_all_time_stats, plot_sessions
+from .iron_cardio_stats import (
+    display_session_stats,
+    get_all_time_stats,
+    get_best_sessions,
+    plot_sessions,
+)
 
 cli = typer.Typer(add_completion=False)
-
-console = Console()
 
 
 def report_version(display: bool) -> None:
@@ -73,9 +76,7 @@ def init(
 
 
 @cli.command()
-def setloads(
-    ctx: typer.Context,
-) -> None:
+def setloads(ctx: typer.Context) -> None:
     """Set units and loads for iron cardio sessions."""
     loads = set_loads()
     data = read_database(IRON_CARDIO_DB)
@@ -84,9 +85,7 @@ def setloads(
 
 
 @cli.command()
-def session(
-    ctx: typer.Context,
-) -> None:
+def session(ctx: typer.Context) -> None:
     """Create a random Iron Cardio session."""
     confirm_loads(IRON_CARDIO_DB)
     session = create_session(IRON_CARDIO_DB)
@@ -103,7 +102,7 @@ def done(
         "-c",
         is_flag=True,
         is_eager=True,
-    )
+    ),
 ) -> None:
     """Save an Iron Cardio session"""
     confirm_loads(IRON_CARDIO_DB)
@@ -136,9 +135,7 @@ def done(
 
 
 @cli.command()
-def last(
-    ctx: typer.Context,
-) -> None:
+def last(ctx: typer.Context) -> None:
     """Display stats from most recent session in database."""
     data = read_database(IRON_CARDIO_DB)
     last_session = data["saved_sessions"][-1]
@@ -159,13 +156,22 @@ def stats(
         "-p",
         is_flag=True,
         is_eager=True,
-    )
+    ),
 ) -> None:
     """Display stats from most recent session in database."""
     data = read_database(IRON_CARDIO_DB)
     dates, weight_per_session = get_all_time_stats(data)
     if plot:
         plot_sessions(dates, weight_per_session)
+
+
+@cli.command()
+def best(
+    ctx: typer.Context,
+) -> None:
+    """Display stats from most recent session in database."""
+    data = read_database(IRON_CARDIO_DB)
+    get_best_sessions(data)
 
 
 if __name__ == "__main__":

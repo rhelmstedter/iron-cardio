@@ -1,13 +1,11 @@
 from statistics import mean
 
 import plotext as plt
-from rich import print
+from rich.table import Table
 
-from .constants import IRON_CARDIO_DB, REP_SCHEMES
+from .console import console
+from .constants import REP_SCHEMES
 from .iron_cardio import Session
-from .iron_cardio_database import read_database
-
-MONTH_AND_YEAR = "%m-%y"
 
 
 def calc_session_stats(session: Session, bodyweight: int) -> dict:
@@ -45,7 +43,7 @@ def calc_session_stats(session: Session, bodyweight: int) -> dict:
 def display_session_stats(session: Session, bodyweight: int):
     """Prints the stats for a given session."""
     stats = calc_session_stats(session, bodyweight)
-    print(
+    console.print(
         f"""Session Stats
 [green]=============[/green]
 Weight Moved: {stats.get("weight moved"):,} {session.units}
@@ -57,6 +55,7 @@ Weight Moved: {stats.get("weight moved"):,} {session.units}
 
 def get_all_time_stats(data: dict) -> tuple[list[str], list[int]]:
     """Print stats from all workout in the database.
+    :data: A dict of the data in the database.
     :returns: Lists of both dates and weight moved per session.
     """
     bodyweight = data["loads"]["bodyweight"]
@@ -76,7 +75,7 @@ def get_all_time_stats(data: dict) -> tuple[list[str], list[int]]:
     total_reps = sum(stat["reps"] for stat in stats)
     average_pace = mean(stat["pace"] for stat in stats)
     print("\nAll Time Stats")
-    print("==============")
+    console.print("==============", style="green")
     print(f"    Total Sessions: {len(stats):,}")
     print(f"        Total Time: {total_mins} mins")
     print(f"Total Weight Moved: {total_weight_moved:,} {units}")
@@ -99,3 +98,46 @@ def plot_sessions(dates: list[str], weight_per_session: list[int]) -> None:
     plt.title("Weight Moved Per Session")
     plt.xlabel("Date")
     plt.show()
+
+
+def get_best_sessions(data: dict):
+    """Get the best sessions based on weight moved."""
+    bodyweight = data["loads"]["bodyweight"]
+    units = data["loads"]["units"]
+    if units.startswith("k"):
+        units = "kg"
+    sessions = []
+    for session_data in data["saved_sessions"]:
+        date = session_data["date"]
+        session = Session(**session_data["session"])
+        sessions.append((date, session, calc_session_stats(session, bodyweight)))
+
+    best_sessions_weight = sorted(
+        sessions, key=lambda x: x[2]["weight moved"], reverse=True
+    )
+    if len(best_sessions_weight) > 10:
+        best_sessions_weight = best_sessions_weight[:10]
+
+    columns = [
+        ("Date", "green"),
+        ("Bells", "magenta"),
+        ("Variation", "magenta"),
+        ("Time (mins)", "magenta"),
+        (f"Weight Moved ({units})", "blue"),
+        ("Reps", "blue"),
+        ("Pace (sec/rep)", "blue"),
+    ]
+    weight_table = Table(title="Best Sessions by Weight moved")
+    for col, style in columns:
+        weight_table.add_column(col, style=style, justify="right")
+    for date, session, stats in best_sessions_weight:
+        weight_table.add_row(
+            date,
+            session.bells,
+            session.variation,
+            f"{session.time}",
+            f"{stats['weight moved']:,}",
+            f"{stats['reps']}",
+            f"{stats['pace']:.1f}",
+        )
+    console.print(weight_table)

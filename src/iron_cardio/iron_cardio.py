@@ -3,9 +3,9 @@ from pathlib import Path
 from random import choice, choices
 
 from rich import print
-from rich.console import Console
 from rich.prompt import Confirm, IntPrompt, Prompt
 
+from .console import console
 from .constants import (
     BELLS,
     DOUBLEBELL_VARIATIONS,
@@ -26,9 +26,6 @@ class Session:
     units: str
     swings: int
     sets: int = 0
-
-
-console = Console()
 
 
 def create_session(db_path: Path) -> Session:
