@@ -40,8 +40,11 @@ def calc_session_stats(session: Session, bodyweight: int) -> dict:
     return stats
 
 
-def display_session_stats(session: Session, bodyweight: int):
-    """Prints the stats for a given session."""
+def display_session_stats(session: Session, bodyweight: int) -> None:
+    """Prints the stats for a given session.
+    :param session: The Session object for which to display the stats.
+    :param bodyweight: The bodyweight of the user.
+    :returns: None"""
     stats = calc_session_stats(session, bodyweight)
     console.print(
         f"""Session Stats
@@ -85,6 +88,11 @@ def get_all_time_stats(data: dict) -> tuple[list[str], list[int]]:
 
 
 def plot_sessions(dates: list[str], weight_per_session: list[int]) -> None:
+    """
+    :param dates: A list of the dates stored as a string.
+    :param weight_per_session: A list of the weight moved per session.
+    :returns: None
+    """
     """Plot weight per session."""
     background_color = "yellow"
     foreground_color = "black"
@@ -101,7 +109,9 @@ def plot_sessions(dates: list[str], weight_per_session: list[int]) -> None:
 
 
 def get_best_sessions(data: dict):
-    """Get the best sessions based on weight moved."""
+    """Get the best sessions based on weight moved.
+    :param data: A dict of the data from the database.
+    :returns: None"""
     bodyweight = data["loads"]["bodyweight"]
     units = data["loads"]["units"]
     if units.startswith("k"):
