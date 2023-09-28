@@ -26,6 +26,9 @@ POSSIBLE_SWINGS = [50, 60, 70, 80, 90, 100, 110, 120, 130, 140, 150]
 
 
 def test_create_session(database):
+    """Test when a session is created, the parameters are appropriate based on the
+    database and within the ranges defined in the constants module.
+    """
     loads = json.load(open(database.name))["loads"]
     actual = create_session(Path(database.name))
     assert isinstance(actual, Session)
@@ -41,6 +44,7 @@ def test_create_session(database):
 
 
 def test_display_session(capfd):
+    """Test a session is displayed correctly in the console."""
     display_session(TEST_SESSION)
     output = capfd.readouterr()[0]
     assert "Iron Cardio Session" in output
@@ -53,6 +57,7 @@ def test_display_session(capfd):
 
 
 def test_display_session_no_swings(capfd):
+    """Test a session is displayed correctly in the console with no swings."""
     display_session(TEST_SESSION_NO_SWINGS)
     output = capfd.readouterr()[0]
     assert "Iron Cardio Session" in output
@@ -68,6 +73,7 @@ def test_display_session_no_swings(capfd):
 @mock.patch("iron_cardio.iron_cardio.Confirm")
 @mock.patch("iron_cardio.iron_cardio._get_units")
 def test_set_loads(units_mock, confirm_mock, int_mock):
+    """Test that setting the loads in the database works."""
     expected = {
         "units": "pounds",
         "bodyweight": 190,
@@ -85,6 +91,7 @@ def test_set_loads(units_mock, confirm_mock, int_mock):
 @pytest.mark.parametrize("response, units", [("p", "pounds"), ("k", "kilograms")])
 @mock.patch("iron_cardio.iron_cardio.Prompt.ask")
 def test_get_units_good_input(ask_mock, response, units):
+    """Test that units are set correctly."""
     expected = units
     ask_mock.side_effect = [response]
     actual = _get_units()
@@ -101,6 +108,7 @@ def test_get_units_good_input(ask_mock, response, units):
 )
 @mock.patch("iron_cardio.iron_cardio.IntPrompt.ask")
 def test_get_options(ask_mock, session_param, response, option):
+    """Test the options for session parameters are valid."""
     expected = option
     ask_mock.side_effect = [response]
     actual = _get_options(session_param)
@@ -135,6 +143,7 @@ def test_custom_session(
     int_responses,
     sets,
 ):
+    """Test creating a custom session works as intended."""
     expected = session
     options_mock.side_effect = [bells, variation]
     int_mock.side_effect = int_responses
