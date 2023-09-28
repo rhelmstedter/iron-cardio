@@ -1,8 +1,7 @@
 from typer.testing import CliRunner
 
-
-from iron_cardio.__main__ import cli
 from iron_cardio.__init__ import __version__
+from iron_cardio.__main__ import cli
 
 runner = CliRunner()
 
