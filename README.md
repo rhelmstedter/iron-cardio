@@ -1,34 +1,33 @@
 
 # Table of Contents
 
-1.  [iron-cardio](#orga0cf839)
-    1.  [Installation](#orgd1a8094)
-        1.  [Using pipx](#orgcd8652c)
-        2.  [Using pip](#org5d419e3)
-
-:export<sub>file</sub><sub>name</sub>: ../README.md
++  [iron-cardio](#org1219799)
+    +  [Installation](#org7795568)
+        +  [Using pipx](#org90af763)
+        +  [Using pip](#org64c33f6)
 
 
-<a id="orga0cf839"></a>
+
+<a id="org1219799"></a>
 
 # iron-cardio
 
-iron-cardio is a CALI designed to create and save iron cardio sessions.
+iron-cardio is a CLI designed to create and save iron cardio sessions.
 
 
-<a id="orgd1a8094"></a>
+<a id="org7795568"></a>
 
 ## Installation
 
 
-<a id="orgcd8652c"></a>
+<a id="org90af763"></a>
 
 ### Using pipx
 
 Use `pipx install iron-cardio`
 
 
-<a id="org5d419e3"></a>
+<a id="org64c33f6"></a>
 
 ### Using pip
 

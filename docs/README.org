@@ -1,10 +1,8 @@
 #+title: Iron Cardio README
-:properties:
-:export_file_name: ../README.md
-:end:
+#+export_file_name: ../README.md
 
 * iron-cardio
-iron-cardio is a CALI designed to create and save iron cardio sessions.
+iron-cardio is a CLI designed to create and save iron cardio sessions.
 
 ** Installation
 *** Using pipx
