@@ -1,4 +1,4 @@
-# Created 2023-09-30 Sat 11:50
+# Created 2023-09-30 Sat 12:10
 #+options: toc:t
 #+title: iron-cardio
 #+author: Russell Helmstedter
@@ -11,26 +11,75 @@ iron-cardio is a CLI designed to create and save iron cardio sessions.
 
 * Installation
 Use [[https://github.com/pypa/pipx][pipx]]
-#+begin_src
+#+begin_src bash
 pipx install iron-cardio
 #+end_src
 * Usage
 ** Initialize
 Run the ~init~ command. This creates the database.
 
-#+begin_src
+#+begin_src bash
 iron-cardio init
 #+end_src
 
 Next, run the ~setloads~ command. This sets the units to either pounds or kilograms, the user's bodyweight, and the loads for the light, medium, and heavy kettlebell. This command can be run as needed when the user is ready to move up in load.
 
-#+begin_src
+#+begin_src bash
 iron-cardio setloads
 #+end_src
 
 ** Commands
 *** session
+The `session` command generates a random iron cardio session.
+#+begin_src bash
+iron-cardio session
+#+end_src
+
+Generated sessions are built from the following parameters
+
+|------------------------+-------------------------|
+| Parameter              | Options                 |
+|------------------------+-------------------------|
+| BELLS                  | Single Bell             |
+|                        | Double Bells            |
+|------------------------+-------------------------|
+| Single Bell Variations | Classic                 |
+|                        | Classic + Pullup        |
+|                        | Classic + Snatch        |
+|                        | Traveling 2s            |
+|                        | Traveling 2s + Snatch   |
+|                        | Traveling 2s + Pullup   |
+|                        | Armor Building Complex  |
+|------------------------+-------------------------|
+| Double Bell Variations | Double Classic          |
+|                        | Double Traveling 2s     |
+|                        | Double Classic + Pullup |
+|                        | Armor Building Complex  |
+|------------------------+-------------------------|
+| TIMES                  | 30 mins                 |
+|                        | 20 mins                 |
+|                        | 10 mins                 |
+|------------------------+-------------------------|
+| LOADS                  | heavy                   |
+|                        | medium                  |
+|                        | light                   |
+|------------------------+-------------------------|
+| SWINGS                 | 0 - 100                 |
+|------------------------+-------------------------|
+|                        |                         |
 *** done
+#+begin_src bash
+iron-cardio done
+#+end_src
 *** last
+#+begin_src bash
+iron-cardio last
+#+end_src
 *** stats
+#+begin_src bash
+iron-cardio stats
+#+end_src
 *** best
+#+begin_src bash
+iron-cardio best
+#+end_src
