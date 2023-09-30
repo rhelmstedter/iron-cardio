@@ -1,5 +1,11 @@
-#+title: Iron Cardio README
-#+export_file_name: ../README.org
+#+TITLE:            README
+#+AUTHOR:           Russell Helmstedter
+#+EMAIL:            (concat "rhelmstedter" at-sign "gmail.com")
+#+DESCRIPTION:      README file for iron-cardio cli tool
+#+KEYWORDS:         kettlebells, iron cardio, cli
+#+LANGUAGE:         en
+#+OPTIONS:          toc:t
+#+EXPORT_FILE_NAME: ../README.org
 
 * iron-cardio
 iron-cardio is a CLI designed to create and save iron cardio sessions.

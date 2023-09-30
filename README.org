@@ -1,6 +1,10 @@
-# Created 2023-09-30 Sat 11:20
-#+title: Iron Cardio README
+# Created 2023-09-30 Sat 11:30
+#+options: toc:t
+#+title: README
 #+author: Russell Helmstedter
+#+description: README file for iron-cardio cli tool
+#+keywords: kettlebells, iron cardio, cli
+#+language: en
 #+export_file_name: ../README.org
 
 * iron-cardio
