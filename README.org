@@ -1,4 +1,6 @@
+# Created 2023-09-30 Sat 11:20
 #+title: Iron Cardio README
+#+author: Russell Helmstedter
 #+export_file_name: ../README.org
 
 * iron-cardio
