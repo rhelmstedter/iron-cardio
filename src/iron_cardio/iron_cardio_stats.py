@@ -130,7 +130,6 @@ def get_best_sessions(data: dict):
 
     columns = [
         ("Date", "green"),
-        ("Bells", "magenta"),
         ("Variation", "magenta"),
         ("Time (mins)", "magenta"),
         (f"Weight Moved ({units})", "blue"),
@@ -143,7 +142,6 @@ def get_best_sessions(data: dict):
     for date, session, stats in best_sessions_weight:
         weight_table.add_row(
             date,
-            session.bells,
             session.variation,
             f"{session.time}",
             f"{stats['weight moved']:,}",
