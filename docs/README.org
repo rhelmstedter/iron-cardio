@@ -73,7 +73,7 @@ iron-cardio done
 To save a custom session, use the ~--custom~ flag. This allows the user to create a custom session.
 
 #+begin_src
-iron-cardio done -c
+iron-cardio done --custom
 #+end_src
 
 *** last
@@ -93,7 +93,7 @@ iron-cardio stats
 To plot the weight moved per session, use the ~--plot~ flag.
 
 #+begin_src bash
-iron-cardio stats
+iron-cardio stats --plot
 #+end_src
 
 *** best
