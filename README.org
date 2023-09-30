@@ -1,4 +1,4 @@
-# Created 2023-09-30 Sat 11:37
+# Created 2023-09-30 Sat 11:50
 #+options: toc:t
 #+title: iron-cardio
 #+author: Russell Helmstedter
@@ -10,7 +10,27 @@
 iron-cardio is a CLI designed to create and save iron cardio sessions.
 
 * Installation
-** Using [[https://github.com/pypa/pipx][pipx]]
-~pipx install iron-cardio~
-** Using pip
-~pip3 install iron-cardio~
+Use [[https://github.com/pypa/pipx][pipx]]
+#+begin_src
+pipx install iron-cardio
+#+end_src
+* Usage
+** Initialize
+Run the ~init~ command. This creates the database.
+
+#+begin_src
+iron-cardio init
+#+end_src
+
+Next, run the ~setloads~ command. This sets the units to either pounds or kilograms, the user's bodyweight, and the loads for the light, medium, and heavy kettlebell. This command can be run as needed when the user is ready to move up in load.
+
+#+begin_src
+iron-cardio setloads
+#+end_src
+
+** Commands
+*** session
+*** done
+*** last
+*** stats
+*** best
