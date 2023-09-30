@@ -1,4 +1,4 @@
-# Created 2023-09-30 Sat 12:24
+# Created 2023-09-30 Sat 12:41
 #+options: toc:t
 #+title: iron-cardio
 #+author: Russell Helmstedter
@@ -7,7 +7,7 @@
 #+language: en
 #+export_file_name: ../README.org
 
-iron-cardio is a CLI designed to create and save iron cardio sessions.
+iron-cardio is a CLI designed to create, save, and track the progress of iron cardio sessions. The inspiration for this project came from [[https://www.chroniclesofstrength.com/what-strength-aerobics-are-and-how-to-use-them-w-brett-jones/][Pat Flynn's conversation with Bret Jones]]. For a more detailed look at Iron Cardio, go checkout the [[https://strongandfit.com/products/iron-cardio-by-brett-jones][Iron Cardio Book]] by Bret Jones.
 
 * Installation
 Use [[https://github.com/pypa/pipx][pipx]]
@@ -85,6 +85,12 @@ iron-cardio last
 
 *** stats
 The ~stats~ command displays the aggregated weight moved, number of reps, and pace for all sessions in the database.
+
+#+begin_src bash
+iron-cardio stats
+#+end_src
+
+To plot the weight moved per session, use the ~--plot~ flag.
 
 #+begin_src bash
 iron-cardio stats

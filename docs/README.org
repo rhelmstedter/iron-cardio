@@ -7,15 +7,15 @@
 #+OPTIONS:          toc:t
 #+EXPORT_FILE_NAME: ../README.org
 
-iron-cardio is a CLI designed to create and save iron cardio sessions.
+iron-cardio is a CLI designed to create, save, and track the progress of iron cardio sessions. The inspiration for this project came from [[https://www.chroniclesofstrength.com/what-strength-aerobics-are-and-how-to-use-them-w-brett-jones/][Pat Flynn's conversation with Bret Jones]]. For a more detailed look at Iron Cardio, go checkout the [[https://strongandfit.com/products/iron-cardio-by-brett-jones][Iron Cardio Book]] by Bret Jones.
 
-** Installation
+* Installation
 Use [[https://github.com/pypa/pipx][pipx]]
 #+begin_src bash
 pipx install iron-cardio
 #+end_src
-** Usage
-*** Initialize
+* Usage
+** Initialize
 Run the ~init~ command. This creates the database.
 
 #+begin_src bash
@@ -28,8 +28,8 @@ Next, run the ~setloads~ command. This sets the units to either pounds or kilogr
 iron-cardio setloads
 #+end_src
 
-*** Commands
-**** session
+** Commands
+*** session
 The ~session~ command generates a random iron cardio session.
 #+begin_src bash
 iron-cardio session
@@ -63,7 +63,7 @@ Generated sessions are built from the following parameters
 |------------------------+----------------------------|
 | *SWINGS*                 | 0 - 100                    |
 
-**** done
+*** done
 The ~done~ command saves the most recently generated session to the database.
 
 #+begin_src
@@ -76,21 +76,27 @@ To save a custom session, use the ~--custom~ flag. This allows the user to creat
 iron-cardio done -c
 #+end_src
 
-**** last
+*** last
 The ~last~ command displays the last saved session and calculates the amount of weight moved, the number of reps, and the pace (sec/rep).
 
 #+begin_src bash
 iron-cardio last
 #+end_src
 
-**** stats
+*** stats
 The ~stats~ command displays the aggregated weight moved, number of reps, and pace for all sessions in the database.
 
 #+begin_src bash
 iron-cardio stats
 #+end_src
 
-**** best
+To plot the weight moved per session, use the ~--plot~ flag.
+
+#+begin_src bash
+iron-cardio stats
+#+end_src
+
+*** best
 The ~best~ command displays the top ten sessions based on the weight moved.
 #+begin_src bash
 iron-cardio best
