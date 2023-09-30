@@ -1,4 +1,4 @@
-#+TITLE:            README
+#+TITLE:            iron-cardio
 #+AUTHOR:           Russell Helmstedter
 #+EMAIL:            (concat "rhelmstedter" at-sign "gmail.com")
 #+DESCRIPTION:      README file for iron-cardio cli tool
@@ -7,11 +7,10 @@
 #+OPTIONS:          toc:t
 #+EXPORT_FILE_NAME: ../README.org
 
-* iron-cardio
 iron-cardio is a CLI designed to create and save iron cardio sessions.
 
 ** Installation
-*** Using pipx
-Use ~pipx install iron-cardio~
+*** Using [[https://github.com/pypa/pipx][pipx]]
+~pipx install iron-cardio~
 *** Using pip
 ~pip3 install iron-cardio~
