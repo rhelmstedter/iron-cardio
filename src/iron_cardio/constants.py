@@ -1,6 +1,5 @@
-"""constants for iron cardio session parameters
+"""constants for iron cardio session parameters."""
 
-"""
 from pathlib import Path
 
 IRON_CARDIO_HOME = Path().home() / ".iron-cardio"
@@ -19,7 +18,7 @@ SINGLEBELL_VARIATIONS = {
     "Traveling 2s": 1 / 10,
     "Traveling 2s + Snatch": 1 / 10,
     "Traveling 2s + Pullup": 1 / 10,
-    "Armor Building Complex": 2 / 10,
+    "Armor Building Complex 2.0": 2 / 10,
 }
 TIMES = {
     30: 1 / 6,
@@ -43,5 +42,6 @@ REP_SCHEMES = {
     "Traveling 2s + Pullup": 4,
     "Double Traveling 2s": 4,
     "Traveling 2s + Snatch": 5,
+    "Armor Building Complex 2.0": 6,
     "Armor Building Complex": 6,
 }
